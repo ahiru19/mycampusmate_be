@@ -1,6 +1,6 @@
-const client = require("../controller/c_client");
+// const client = require("../controller/c_client");
 
-module.exports.routeClient = [
+// module.exports.routeClient = [
     // {
     //     path: "/client/getAll/",
     //     method: "get",
@@ -24,4 +24,4 @@ module.exports.routeClient = [
     //     method: "delete",
     //     action: client.deleteClient
     // }
-]
+// ]
