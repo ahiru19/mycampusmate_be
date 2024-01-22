@@ -1,6 +1,6 @@
 const {Student} = require("../model/m_student");
 
-const getStudent = async(req, res) => {
+const getStudents = async(req, res) => {
     let users = await Student.findAll({
         attributes:{exclude:['updatedAt']}
     });
@@ -51,4 +51,4 @@ const deleteStudent = async(req, res) => {
     
 }
 
-module.exports = { getStudent, createStudent, updateStudent, deleteStudent};
+module.exports = { getStudents, createStudent, updateStudent, deleteStudent};
