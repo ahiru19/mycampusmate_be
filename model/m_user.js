@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/dbconfig");
-
 const User = sequelize.define("users", {
 
     id: {
@@ -48,5 +47,6 @@ const User = sequelize.define("users", {
     }
     
 }, { freezeTableName: true, timestamps:false});
+
 
 module.exports = {User}

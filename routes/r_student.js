@@ -1,6 +1,6 @@
 const student = require("../controller/c_student");
 
-module.exports.routeAdmin= [
+module.exports.routeStudent= [
     {
         path: "/student/getAllStudent/",
         method: "get",

@@ -22,6 +22,6 @@ const sequelize = new Sequelize(
 );
 
 // CONNECTION TO DATABASE SYNCRONIZATION
-// sequelize.sync({ alter: true, logging: true });
+sequelize.sync({ alter: true, logging: true });
 // EXPORT connector
 module.exports = sequelize;

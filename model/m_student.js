@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/dbconfig");
+const {User} = require("./m_user");
 
 const Student = sequelize.define("student", {
     id: {
@@ -8,6 +9,12 @@ const Student = sequelize.define("student", {
         unique: true,
         primaryKey: true,
         autoIncrement: true,
+    },
+
+    user_id:{
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+        unique: true,
     },
 
     stud_id: {
@@ -59,5 +66,20 @@ const Student = sequelize.define("student", {
         allowNull: false,
     },
 }, { freezeTableName: true, timestamps: true });
+
+// relation
+User.hasOne(Student, {
+    foreignKey: "user_id",
+    sourceKey: "id",
+    as: "student",
+    onDelete: "CASCADE"
+});
+
+Student.belongsTo(User, {
+    foreignKey: "user_id",
+    targetKey: "id"
+});
+
+
 
 module.exports = {Student}
