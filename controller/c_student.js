@@ -1,8 +1,8 @@
 const {Student} = require("../model/m_student");
-const {User} = require("../model/m_user");
+
 
 const getStudents = async(req, res) => {
-    let users = await User.findAll({
+    let users = await Student.findAll({
         where: {usertype: 'student'},
         attributes:{exclude:['updatedAt']}
     });

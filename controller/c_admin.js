@@ -28,4 +28,14 @@ const createStudent = async (req, res) => {
     
   };
 
-module.exports = { createStudent };
+const getStudents = async(req, res) => {
+    let users = await User.findAll({
+        where: {usertype: 'student'},
+        attributes:{exclude:['updatedAt']}
+    });
+
+    res.send(users);
+}
+
+
+module.exports = { createStudent, getStudents };

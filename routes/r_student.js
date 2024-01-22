@@ -2,12 +2,12 @@ const student = require("../controller/c_student");
 
 module.exports.routeAdmin= [
     {
-        path: "/admin/getAllStudent/",
+        path: "/student/getAllStudent/",
         method: "get",
         action: student.getStudents
     },
     {
-        path: "/admin/updateStudent/",
+        path: "/student/updateStudent/",
         method: "put",
         action: student.updateStudent
     },

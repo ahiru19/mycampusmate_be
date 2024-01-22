@@ -1,5 +1,4 @@
 const admin = require("../controller/c_admin");
-const student = require("../controller/c_student");
 
 module.exports.routeAdmin= [
     {
