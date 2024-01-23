@@ -31,6 +31,12 @@ const createStudent = async (req, res) => {
 const approveStudent = async (req, res) => {
 
   let user = await User.findOne({where:{id:req.query.id}})
+  .catch(
+    (err) => {
+      res.send('No ID found!');
+      return 0;
+    });
+
   if(!user){ // check if there is a student
     res.send('Student not found!');
     return 0;
@@ -53,7 +59,12 @@ const approveStudent = async (req, res) => {
 }
 
 const rejectStudent = async (req, res) => {
-  let user = await User.findOne({where:{id:req.query.id}});
+  let user = await User.findOne({where:{id:req.query.id}}).catch(
+    (err) => {
+      res.send('No ID found!');
+      return 0;
+    }
+  );
   if(!user){ // check if there is a student
     res.send('Student not found!');
     return 0;
