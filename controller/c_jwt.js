@@ -37,7 +37,7 @@ const login = async (req, res) => {
 
   let user = await User.findOne({where: {username: body.username}});
   let check_user = await authToken.findOne({where:{user_id: user.id}});
-
+  
   if(user){
       bcrypt.compare(body.password, user.password, async (err, result) => {
         if(result){
@@ -51,9 +51,9 @@ const login = async (req, res) => {
           body.user_id = user.id;
 
           if(check_user){//check first if user is already logged in
-            await authToken.update(...body, {where: { id: check_user.id}});
+            await authToken.update(body, {where: { id: check_user.id}});
           }else {
-            await authToken.create({...body})
+            await authToken.create(body)
           }
 
           result = {
