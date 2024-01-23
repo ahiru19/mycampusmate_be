@@ -21,4 +21,9 @@ module.exports.routeAdmin= [
         method: "delete",
         action: admin.rejectStudent
     },
+    {
+        path: "/admin/countAll/",
+        method: "get",
+        action: admin.countStudents
+    }
 ]

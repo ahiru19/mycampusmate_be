@@ -95,5 +95,21 @@ const getStudents = async(req, res) => {
     res.send(users);
 }
 
+const countStudents = async(req, res) => {
 
-module.exports = { createStudent, getStudents, approveStudent, rejectStudent };
+  let user_pending = await User.count({ where: {is_approved: 0}});
+  let user_approved = await User.count({ where: {is_approved: 1}});
+  let user_rejected = await User.count({ where: {is_approved: 2}});
+
+  let data = {
+    'pending': user_pending,
+    'approved': user_approved,
+    'rejected': user_rejected
+  }
+
+  res.send(data).status(200);
+  
+}
+
+
+module.exports = { createStudent, getStudents, approveStudent, rejectStudent, countStudents };
