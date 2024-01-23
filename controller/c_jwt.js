@@ -34,50 +34,47 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   let body = req.body;
+  console.log(body.username);
+  await User.findOne({where: {username: body.username}}).then(async (user)=> {
 
-  let user = await User.findOne({where: {username: body.username}});
-  let check_user = await authToken.findOne({where:{user_id: user.id}});
+    bcrypt.compare(body.password, user.password, async (err, result) => {
+      if(result){
+
+        const accessToken = sign(
+          { username: req.body.username },
+          "changeforjwtsecret"
+        );
+
+        body.token = accessToken;
+        body.user_id = user.id;
+        
+        await authToken.findOrCreate({ default:body, where: {user_id: user.id}});
+       
+
+        result = {
+          message:"Login Successfully",
+          token: accessToken,
+          data: {
+            "first_name":user.first_name,
+            "last_name":user.last_name,
+            "middle_name":user.middle_name,
+            "usertype":user.usertype,
+          }
+        }
+
+        return res.send(result).status(200)
+
+      }
+      else {
+        return res.send('Username or Password is incorrect');
+      }
+    })
+  }
+  ).catch(async (err) => {
+    console.log(err)
+    res.send('User not found');
+  })
   
-  if(user){
-      bcrypt.compare(body.password, user.password, async (err, result) => {
-        if(result){
-
-          const accessToken = sign(
-            { username: req.body.username },
-            "changeforjwtsecret"
-          );
-
-          body.token = accessToken;
-          body.user_id = user.id;
-
-          if(check_user){//check first if user is already logged in
-            await authToken.update(body, {where: { id: check_user.id}});
-          }else {
-            await authToken.create(body)
-          }
-
-          result = {
-            message:"Login Successfully",
-            token: accessToken,
-            data: {
-              "first_name":user.first_name,
-              "last_name":user.last_name,
-              "middle_name":user.middle_name,
-              "usertype":user.usertype,
-            }
-          }
-
-          return res.send(result).status(200)
-
-        }
-        else {
-          return res.send('Username or Password is incorrect').status(401)
-        }
-      })
-  }
-  else {
-    return res.send('Username not Found').status(404)
-  }
 };
 
 const logout = async (req, res) => {
