@@ -33,11 +33,11 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  let body = req.body;
-  console.log(body.username);
-  await User.findOne({where: {username: body.username}}).then(async (user)=> {
+  
 
-    bcrypt.compare(body.password, user.password, async (err, result) => {
+  await User.findOne({where: {username: req.body.username}}).then(async (user)=> {
+
+    bcrypt.compare(req.body.password, user.password, async (err, result) => {
       if(result){
 
         const accessToken = sign(
@@ -45,12 +45,12 @@ const login = async (req, res) => {
           "changeforjwtsecret"
         );
 
+        let body = {};
         body.token = accessToken;
         body.user_id = user.id;
-        
-        await authToken.findOrCreate({ default:body, where: {user_id: user.id}});
-       
 
+        await authToken.findOrCreate({ defaults:body, where: {user_id: user.id}});
+       
         result = {
           message:"Login Successfully",
           token: accessToken,
