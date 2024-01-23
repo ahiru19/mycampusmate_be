@@ -28,6 +28,30 @@ const createStudent = async (req, res) => {
     
   };
 
+const approveStudent = async (req, res) => {
+
+  let user = await User.findOne({where:{id:req.query.id}})
+  if(!user){ // check if there is a student
+    res.send('Student not found!');
+    return 0;
+  }
+  if(user && user.is_approved == true){ //check if student is already approved
+    res.send('Student is already approved!');
+    return 0;
+  }
+
+  User.update({is_approved:true}, {where : {id: req.query.id} } )
+  .then ( (user)=>{
+    return res.send("Approved Successfully").status(200)
+  })
+  .catch(async (err) => {
+    console.log(err)
+    res.send('Something went wrong!');
+    return 0;
+  })
+  
+}
+
 const getStudents = async(req, res) => {
     let users = await User.findAll({
         where: {usertype: 'student'},
@@ -38,4 +62,4 @@ const getStudents = async(req, res) => {
 }
 
 
-module.exports = { createStudent, getStudents };
+module.exports = { createStudent, getStudents, approveStudent };
