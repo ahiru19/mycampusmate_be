@@ -35,7 +35,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   
 
-  await User.findOne({where: {username: req.body.username}}).then(async (user)=> {
+  await User.findOne({where: {username: req.body.username, is_approved:1}}).then(async (user)=> {
 
     bcrypt.compare(req.body.password, user.password, async (err, result) => {
       if(result){
@@ -72,7 +72,7 @@ const login = async (req, res) => {
   }
   ).catch(async (err) => {
     console.log(err)
-    res.send('User not found');
+    res.send('User not found or not yet approved');
   })
   
 };
