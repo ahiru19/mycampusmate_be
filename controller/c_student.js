@@ -12,12 +12,14 @@ const getStudents = async(req, res) => {
 
 const createOrUpdateStudent = async (req, res) => {
     req.body.user_id = req.query.id;
+    
     await Student.upsert({ ...req.body})
     .then( async(user) => {
         res.send('Student created successfully').status(200)
         })
     .catch( async (err) => {
         res.send(err).status(500);
+        return 0;
         })
     
    
@@ -31,6 +33,7 @@ const updateStudent = async(req, res) => {
         }).catch( async (err) => {
 
             res.send(err).status(500);
+            return 0;
         });
 }
 
@@ -41,11 +44,13 @@ const deleteStudent = async(req, res) => {
             res.send('Student deleted successfully').status(200)
         }else {
             res.send('Student not found').status(400)
+            return 0;
         }
         
         }).catch( async (err) => {
 
             res.send(err).status(500);
+            return 0;
         });
 
     
