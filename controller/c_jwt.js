@@ -39,11 +39,6 @@ const login = async (req, res) => {
   let check_user = await authToken.findOne({where:{user_id: user.id}});
 
   if(user){
-
-    if(check_user){//check first if user is already logged in
-      res.send("Account is already Logged In").status(400)
-    }
-
       bcrypt.compare(body.password, user.password, async (err, result) => {
         if(result){
 
@@ -54,23 +49,28 @@ const login = async (req, res) => {
 
           body.token = accessToken;
           body.user_id = user.id;
-          await authToken.create({...body})
+
+          if(check_user){//check first if user is already logged in
+            await authToken.update({...body, where: { id: check_user.id}});
+          }else {
+            await authToken.create({...body})
+          }
 
           result = {
             message:"Login Successfully",
             token: accessToken
           }
 
-          res.send(result).status(200)
+          return res.send(result).status(200)
 
         }
         else {
-            res.send('Username or Password is incorrect').status(401)
+          return res.send('Username or Password is incorrect').status(401)
         }
       })
   }
   else {
-    res.send('Username not Found').status(404)
+    return res.send('Username not Found').status(404)
   }
 };
 
