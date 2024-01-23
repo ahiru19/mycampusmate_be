@@ -58,7 +58,13 @@ const login = async (req, res) => {
 
           result = {
             message:"Login Successfully",
-            token: accessToken
+            token: accessToken,
+            data: {
+              "first_name":user.first_name,
+              "last_name":user.last_name,
+              "middle_name":user.middle_name,
+              "usertype":user.usertype,
+            }
           }
 
           return res.send(result).status(200)
