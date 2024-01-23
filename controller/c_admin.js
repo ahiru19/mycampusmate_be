@@ -59,20 +59,30 @@ const approveStudent = async (req, res) => {
 }
 
 const rejectStudent = async (req, res) => {
-  let user = await User.findOne({where:{id:req.query.id}}).catch(
+  let user = await User.findOne({where:{id:req.query.id}})
+  .catch(
     (err) => {
       res.send('No ID found!');
       return 0;
-    }
-  );
+    });
+
   if(!user){ // check if there is a student
     res.send('Student not found!');
     return 0;
   }
-  else {
-    user.destroy();
-    res.send('Student is now rejected!');
+  if(user && user.is_approved == 2){ //check if student is already approved
+    res.send('Student is already rejected!');
+    return 0;
   }
+
+  User.update({is_approved:2}, {where : {id: req.query.id} } )
+  .then ( (user)=>{
+    return res.send("Student is now rejected").status(200)
+  })
+  .catch(async (err) => {
+    res.send('Something went wrong!');
+    return 0;
+  })
  
 }
 
