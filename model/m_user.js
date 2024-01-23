@@ -37,7 +37,7 @@ const User = sequelize.define("users", {
     },
 
     is_approved: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.INTEGER,
         defaultValue: false,
     },
 
