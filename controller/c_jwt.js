@@ -41,9 +41,7 @@ const login = async (req, res) => {
   if(user){
 
     if(check_user){//check first if user is already logged in
-      res.send({
-        message:"Account is already Logged In",
-      }).status(400)
+      res.send("Account is already Logged In").status(400)
     }
 
       bcrypt.compare(body.password, user.password, async (err, result) => {
