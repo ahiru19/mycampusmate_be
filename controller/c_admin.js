@@ -52,6 +52,19 @@ const approveStudent = async (req, res) => {
   
 }
 
+const rejectStudent = async (req, res) => {
+  let user = await User.findOne({where:{id:req.query.id}});
+  if(!user){ // check if there is a student
+    res.send('Student not found!');
+    return 0;
+  }
+  else {
+    user.destroy();
+    res.send('Student is now rejected!');
+  }
+ 
+}
+
 const getStudents = async(req, res) => {
     let users = await User.findAll({
         where: {usertype: 'student'},
@@ -62,4 +75,4 @@ const getStudents = async(req, res) => {
 }
 
 
-module.exports = { createStudent, getStudents, approveStudent };
+module.exports = { createStudent, getStudents, approveStudent, rejectStudent };

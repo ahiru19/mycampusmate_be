@@ -16,4 +16,9 @@ module.exports.routeAdmin= [
         method: "put",
         action: admin.approveStudent
     },
+    {
+        path: "/admin/rejectStudent/",
+        method: "delete",
+        action: admin.rejectStudent
+    },
 ]
