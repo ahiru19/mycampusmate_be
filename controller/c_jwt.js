@@ -36,7 +36,16 @@ const login = async (req, res) => {
   let body = req.body;
 
   let user = await User.findOne({where: {username: body.username}});
+  let check_user = await authToken.findOne({where:{user_id: user.id}});
+
   if(user){
+
+    if(check_user){//check first if user is already logged in
+      res.send({
+        message:"Account is already Logged In",
+      }).status(400)
+    }
+
       bcrypt.compare(body.password, user.password, async (err, result) => {
         if(result){
 
