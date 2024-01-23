@@ -9,6 +9,6 @@ module.exports.routeStudent= [
     {
         path: "/student/updateStudent/",
         method: "put",
-        action: student.updateStudent
+        action: student.createOrUpdateStudent
     },
 ]

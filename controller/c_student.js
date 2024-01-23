@@ -10,14 +10,14 @@ const getStudents = async(req, res) => {
     res.send(users);
 }
 
-const createStudent = async (req, res) => {
-
-    await Student.create(req.body).then( async() => {
-
+const createOrUpdateStudent = async (req, res) => {
+    req.body.user_id = req.query.id;
+    await Student.upsert({ ...req.body})
+    .then( async(user) => {
         res.send('Student created successfully').status(200)
-        }).catch( async (err) => {
-
-            res.send(err).status(500);
+        })
+    .catch( async (err) => {
+        res.send(err).status(500);
         })
     
    
@@ -32,8 +32,6 @@ const updateStudent = async(req, res) => {
 
             res.send(err).status(500);
         });
-
-
 }
 
 const deleteStudent = async(req, res) => {
@@ -53,4 +51,4 @@ const deleteStudent = async(req, res) => {
     
 }
 
-module.exports = { getStudents, createStudent, updateStudent, deleteStudent};
+module.exports = { getStudents, createOrUpdateStudent, updateStudent, deleteStudent};

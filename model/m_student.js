@@ -22,48 +22,35 @@ const Student = sequelize.define("student", {
         allowNull: true,
         unique: true,
     },
-
-    first_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-
-    },
-    
-    last_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-
-    },
-
     age: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
 
     },
 
     birth_date: {
         type: DataTypes.DATEONLY,
-        allowNull: false,
+        allowNull: true,
     },
 
     sex: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
 
     address: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
 
     contact_num: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
 
     program: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
 }, { freezeTableName: true, timestamps: true });
 

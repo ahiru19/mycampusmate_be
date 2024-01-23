@@ -49,7 +49,7 @@ const login = async (req, res) => {
         body.token = accessToken;
         body.user_id = user.id;
 
-        await authToken.findOrCreate({ defaults:body, where: {user_id: user.id}});
+        await authToken.upsert({ ...body});
        
         result = {
           message:"Login Successfully",
