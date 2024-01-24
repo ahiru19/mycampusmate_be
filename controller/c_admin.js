@@ -33,12 +33,12 @@ const approveStudent = async (req, res) => {
   let user = await User.findOne({where:{id:req.query.id}})
   .catch(
     (err) => {
-      res.send('No ID found!');
+      res.status(404).send('No ID found!');
       return 0;
     });
 
   if(!user){ // check if there is a student
-    res.send('Student not found!');
+    res.status(404).send('Student not found!');
     return 0;
   }
   if(user && user.is_approved == true){ //check if student is already approved
@@ -48,7 +48,7 @@ const approveStudent = async (req, res) => {
 
   User.update({is_approved:true}, {where : {id: req.query.id} } )
   .then ( (user)=>{
-    return res.send("Approved Successfully").status(200)
+    return res.status(200).send("Approved Successfully")
   })
   .catch(async (err) => {
     console.log(err)
@@ -77,10 +77,10 @@ const rejectStudent = async (req, res) => {
 
   User.update({is_approved:2}, {where : {id: req.query.id} } )
   .then ( (user)=>{
-    return res.send("Student is now rejected").status(200)
+    return res.status(200).send("Student is now rejected")
   })
   .catch(async (err) => {
-    res.send('Something went wrong!');
+    res.status(400).send('Something went wrong!');
     return 0;
   })
  
@@ -107,7 +107,7 @@ const countStudents = async(req, res) => {
     'rejected': user_rejected
   }
 
-  res.send(data).status(200);
+  res.status(200).send(data);
   
 }
 

@@ -11,6 +11,14 @@ const register = async (req, res) => {
   bcrypt.hash(body.password, 12).then( async (hash) => {
       body.password = hash;
 
+
+      let if_exist = await User.findOne({where:{username:body.username}});
+      console.log(if_exist);
+      if(if_exist){
+        res.status(400).send('Username is already taken!');
+        return 0;
+      }
+
       await User.create({ ...body })
       .then( async () => {
 
@@ -39,7 +47,6 @@ const login = async (req, res) => {
 
     bcrypt.compare(req.body.password, user.password, async (err, result) => {
       if(result){
-
         const accessToken = sign(
           { username: req.body.username },
           "changeforjwtsecret"
@@ -61,18 +68,17 @@ const login = async (req, res) => {
             "usertype":user.usertype,
           }
         }
-
-        return res.send(result).status(200)
+        return res.status(200).send(result)
 
       }
       else {
-        return res.send('Username or Password is incorrect');
+        return res.status(401).send('Username or Password is incorrect');
       }
     })
   }
   ).catch(async (err) => {
     console.log(err)
-    res.send('User not found or not yet approved');
+    res.status(400).send('User not found or not yet approved');
   })
   
 };
@@ -83,10 +89,10 @@ const logout = async (req, res) => {
 
   await authToken.destroy({where: {token}})
   .then( async ()=> {
-    res.send('Logged out successfully').status(200);
+    res.status(200).send('Logged out successfully');
   })
   .catch( async (err) => {
-    res.send(err).status(500);
+    res.status(500).send(err);
   })
   
 };
