@@ -1,5 +1,5 @@
 const { Sequelize } = require("sequelize");
-
+const fs = require('fs');
 // CREATE CONNECTION TO DATABASE
 const sequelize = new Sequelize(
     process.env.DB_NAME, 
@@ -9,6 +9,11 @@ const sequelize = new Sequelize(
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
         dialect: "mysql",
+        dialectOptions:{
+            ssl : {
+                ca: fs.readFileSync('./config/cacert.pem'),
+            }
+        },
         pool: {
             max: 5,
             min: 0,
@@ -22,6 +27,6 @@ const sequelize = new Sequelize(
 );
 
 // CONNECTION TO DATABASE SYNCRONIZATION
-sequelize.sync({ alter: true, logging: true });
+// sequelize.sync({ alter: true, logging: true });
 // EXPORT connector
 module.exports = sequelize;
