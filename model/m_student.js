@@ -13,15 +13,23 @@ const Student = sequelize.define("student", {
 
     user_id:{
         type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
         unique: true,
+        allowNull:false
     },
 
-    stud_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        unique: true,
+    first_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
     },
+    last_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    middle_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+
     age: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -52,6 +60,22 @@ const Student = sequelize.define("student", {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    acad_year: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    school_year: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    is_regular: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+    },
+    current_year: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    }
 }, { freezeTableName: true, timestamps: true });
 
 // relation

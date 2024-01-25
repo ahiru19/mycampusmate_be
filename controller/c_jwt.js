@@ -3,6 +3,8 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const { sign, verify } = require("jsonwebtoken");
 const {User} = require("../model/m_user");
+const {Student} = require("../model/m_student");
+const {Admin} = require("../model/m_admin");
 const {authToken} = require("../model/m_auth");
 
 const register = async (req, res) => {
@@ -20,7 +22,16 @@ const register = async (req, res) => {
       }
 
       await User.create({ ...body })
-      .then( async () => {
+      .then( async (user) => {
+        
+        body.user_id = user.id;
+
+        if(body.usertype == 1){
+          await Admin.create({ ...body})
+        }
+        else{
+          await Student.create({ ...body})
+        }
 
         result = {
           status: 200,

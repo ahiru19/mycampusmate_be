@@ -9,19 +9,6 @@ const User = sequelize.define("users", {
         primaryKey: true,
         autoIncrement: true,
     },
-
-    first_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    last_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    middle_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
     username: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -32,7 +19,9 @@ const User = sequelize.define("users", {
     },
 
     usertype: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
+        //1 for admin
+        //2 for student
         allowNull: false,
     },
 
