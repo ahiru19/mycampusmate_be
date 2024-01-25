@@ -5,14 +5,14 @@ const path = require("path");
 const getStudents = async(req, res) => {
     let users = await Student.findAll({
         where: {usertype: 'student'},
-        attributes:{exclude:['updatedAt']},
+        attributes:{exclude:['updatedAt']}
     });
 
     res.send(users);
 }
 
 const createStudent = async (req, res) => {
-    // req.body.user_id = req.query.id;
+    req.body.user_id = req.query.id;
     await Student.create({ ...req.body})
     .then( async() => {
         res.send('Student created successfully').status(200)
@@ -26,6 +26,20 @@ const createStudent = async (req, res) => {
 };
 
 const updateStudent = async(req, res) => {
+    
+    const d = new Date();
+    const birthdate = new Date(req.body.birthdate);
+    let curr_year = d.getFullYear();
+    let birth_year = birthdate.getFullYear();
+
+    req.body.age = parseInt(curr_year) - parseInt(birth_year); //get the age
+
+    let curr_month = d.getMonth();
+    let birth_month = birthdate.getMonth();
+
+    if(birth_month > curr_month){
+        req.body.age = req.body.age - 1;//if birth month does not come yet minus 1
+    }
     
     await Student.update(req.body, {where:{id:req.query.id}} ).then( async() => {
 
