@@ -40,10 +40,15 @@ const updateStudent = async(req, res) => {
     if(birth_month > curr_month){
         req.body.age = req.body.age - 1;//if birth month does not come yet minus 1
     }
-    
+    let user_id = await Student.findOne({where:{id:req.query.id}, attributes:['id']});
+
+    if(!user_id){
+        res.status(404).send('No Student Found');
+        return 0;
+    }
     await Student.update(req.body, {where:{id:req.query.id}} ).then( async(user) => {
 
-        let user_id = await Student.findOne({where:{id:req.query.id}, attributes:['id']});
+        
        
         if(req.files){
         let body = req.body
@@ -53,7 +58,7 @@ const updateStudent = async(req, res) => {
         body.file_path = `./public/profile/`
         body.file_rand_name =  require('crypto').randomBytes(12).toString('hex') + path.extname(body.file_name);
 
-        await studentProfile.create({ ...body})
+        await studentProfile.upsert({ ...body})
         .then( async(user)=> {
             await file.mv(`./public/profile/${body.file_rand_name}`);
         })
