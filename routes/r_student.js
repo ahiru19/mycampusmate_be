@@ -7,8 +7,8 @@ module.exports.routeStudent= [
         action: student.getStudents
     },
     {
-        path: "/student/updateStudent/",
+        path: "/student/update/",
         method: "put",
-        action: student.createOrUpdateStudent
+        action: student.updateStudent
     },
 ]

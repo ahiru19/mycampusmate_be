@@ -5,6 +5,7 @@ const { sign, verify } = require("jsonwebtoken");
 const {User} = require("../model/m_user");
 const {Student} = require("../model/m_student");
 const {Admin} = require("../model/m_admin");
+const {studentProfile} = require("../model/m_student_profile");
 const {authToken} = require("../model/m_auth");
 
 const register = async (req, res) => {
@@ -123,9 +124,19 @@ const getOneUser = async(req, res) => {
     })
   }
   else if(usertype == 2) {
-    await Student.findOne({where:{user_id:id}})
+    await Student.findOne({
+      where:{user_id:id},
+      include: [
+        {
+            model: studentProfile,
+            attributes: ['file_path', 'file_rand_name', 'file_name'],
+            as: "student_profile"
+        },
+    ]
+    
+    })
     .then( (user)=>{
-        res.status.send(user)
+        res.status(200).send(user)
     })
     .catch( (err) => {
       res.status(500).send(err)
@@ -135,8 +146,6 @@ const getOneUser = async(req, res) => {
   else {
     res.status(404).send('Usertype not found!')
   }
-
-  res.send(users);
 }
 
 
