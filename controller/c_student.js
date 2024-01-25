@@ -43,10 +43,12 @@ const updateStudent = async(req, res) => {
     
     await Student.update(req.body, {where:{id:req.query.id}} ).then( async(user) => {
 
+        let user_id = await Student.findOne({where:{id:req.query.id}, attributes:['id']});
+       
         if(req.files){
         let body = req.body
         let file = req.files.file
-        body.student_id = user.id
+        body.student_id = user_id.id
         body.file_name = file.name
         body.file_path = `./public/profile/`
         body.file_rand_name =  require('crypto').randomBytes(12).toString('hex') + path.extname(body.file_name);
