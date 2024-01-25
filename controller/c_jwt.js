@@ -97,8 +97,18 @@ const logout = async (req, res) => {
   
 };
 
+const getOneUser = async(req, res) => {
+  let id = req.query.id;
+
+  let users = await User.findOne({
+      where: {id: id},
+      attributes:['first_name,last_name,middle_name']
+  });
+
+  res.send(users);
+}
 
 
 
   
-module.exports = { login, register, logout };
+module.exports = { login, register, logout, getOneUser };

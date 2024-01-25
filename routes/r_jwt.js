@@ -19,11 +19,11 @@ module.exports.routeJWT = [
         action: jwt.register
     },
 
-    // {
-    //     path: "/client/getAll/",
-    //     method: "get",
-    //     action: client.getClient
-    // },
+    {
+        path: "/jwt/getOne/",
+        method: "get",
+        action: jwt.getOneUser
+    },
 
     // {
     //     path: "/client/create/",
