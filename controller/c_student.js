@@ -41,12 +41,12 @@ const updateStudent = async(req, res) => {
         req.body.age = req.body.age - 1;//if birth month does not come yet minus 1
     }
     
-    await Student.update(req.body, {where:{id:req.query.id}} ).then( async() => {
+    await Student.update(req.body, {where:{id:req.query.id}} ).then( async(user) => {
 
         if(req.files){
         let body = req.body
         let file = req.files.file
-        body.student_id = req.query.id
+        body.student_id = user.id
         body.file_name = file.name
         body.file_path = `./public/profile/`
         body.file_rand_name =  require('crypto').randomBytes(12).toString('hex') + path.extname(body.file_name);
