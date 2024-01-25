@@ -102,7 +102,7 @@ const getOneUser = async(req, res) => {
 
   let users = await User.findOne({
       where: {id: id},
-      attributes:['first_name,last_name,middle_name']
+      attributes:['first_name','last_name','middle_name']
   });
 
   res.send(users);
