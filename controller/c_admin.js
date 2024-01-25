@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const {User} = require("../model/m_user");
+const {Student} = require ("../model/m_student")
 
 const createStudent = async (req, res) => {
     let body = req.body;
@@ -89,7 +90,14 @@ const rejectStudent = async (req, res) => {
 const getStudents = async(req, res) => {
     let users = await User.findAll({
         where: {usertype: 2},
-        attributes:{exclude:['updatedAt']}
+        attributes:['id','username','usertype'],
+        include:[
+          {
+            model: Student,
+            attributes: ['first_name', 'last_name', 'middle_name'],
+            as: "student"
+        },
+        ]
     });
 
     res.send(users);
