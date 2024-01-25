@@ -88,7 +88,7 @@ const rejectStudent = async (req, res) => {
 
 const getStudents = async(req, res) => {
     let users = await User.findAll({
-        where: {usertype: 'student'},
+        where: {usertype: 2},
         attributes:{exclude:['updatedAt']}
     });
 
@@ -112,4 +112,4 @@ const countStudents = async(req, res) => {
 }
 
 
-module.exports = { createStudent, getStudents, approveStudent, rejectStudent, countStudents };
+module.exports = { createStudent, getStudents, approveStudent, rejectStudent, countStudents};
