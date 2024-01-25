@@ -111,11 +111,30 @@ const logout = async (req, res) => {
 
 const getOneUser = async(req, res) => {
   let id = req.query.id;
-
-  let users = await User.findOne({
-      where: {id: id},
-      attributes:['first_name','last_name','middle_name']
-  });
+  let usertype = req.query.usertype;
+  if(usertype == 1){
+    await Admin.findOne({where:{user_id:id}})
+    .then( (user)=>{
+        res.status.send(user)
+    })
+    .catch( (err) => {
+      res.status(500).send(err)
+      return 0;
+    })
+  }
+  else if(usertype == 2) {
+    await Student.findOne({where:{user_id:id}})
+    .then( (user)=>{
+        res.status.send(user)
+    })
+    .catch( (err) => {
+      res.status(500).send(err)
+      return 0;
+    })
+  }
+  else {
+    res.status(404).send('Usertype not found!')
+  }
 
   res.send(users);
 }
