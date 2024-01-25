@@ -40,13 +40,13 @@ const updateStudent = async(req, res) => {
     if(birth_month > curr_month){
         req.body.age = req.body.age - 1;//if birth month does not come yet minus 1
     }
-    let user_id = await Student.findOne({where:{id:req.query.id}, attributes:['id']});
+    let user_id = await Student.findOne({where:{user_id:req.query.id}, attributes:['id']});
 
     if(!user_id){
         res.status(404).send('No Student Found');
         return 0;
     }
-    await Student.update(req.body, {where:{id:req.query.id}} ).then( async(user) => {
+    await Student.update(req.body, {where:{user_id:req.query.id}} ).then( async(user) => {
 
         
        
