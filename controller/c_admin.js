@@ -152,7 +152,7 @@ const updateAdmin = async(req, res) => {
           return 0;
         })
       }
-      let admin = Admin.findOne({
+      let admin = await Admin.findOne({
         where:{user_id:id},
         include:[
               {
@@ -167,6 +167,7 @@ const updateAdmin = async(req, res) => {
               }
               ]
     });
+    
       res.status(200).send(admin);
   })
   .catch( async(err) => {
