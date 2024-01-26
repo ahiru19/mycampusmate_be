@@ -47,7 +47,7 @@ const register = async (req, res) => {
               }
               body.file_rand_name =  require('crypto').randomBytes(12).toString('hex') + path.extname(body.file_name);
    
-              await userProfile.insert({ ...body}) 
+              await userProfile.create({ ...body}) 
               .then( async(user)=> {
                   await file.mv(`./public/profile/${body.file_rand_name}`);
               })
@@ -70,6 +70,7 @@ const register = async (req, res) => {
       })
 
       .catch( async (err) => {
+        console.log(err)
         if (err) {
             res.status(400).send({ error: err });
         }
