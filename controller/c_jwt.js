@@ -146,7 +146,7 @@ const getOneUser = async(req, res) => {
     ]
   })
     .then( (user)=>{
-        res.status.send(user)
+        res.status(200).send(user)
     })
     .catch( (err) => {
       console.log(err)
