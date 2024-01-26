@@ -124,9 +124,16 @@ const countStudents = async(req, res) => {
 
 const updateAdmin = async(req, res) => {
   let id = req.user_info.id;
+  let body = req.body;
 
-  await Admin.update(req.body, {where:{id}})
+  //update for the user
+  let user = await Admin.findOne({where:{id:id}});
+  await User.update(body, {where:{id:user.user_id}});
+
+  //update for the admin
+  await Admin.update(body, {where:{id:id}})
   .then( async () => {
+
       if(req.files) {
         let file_info = await getFileInfo(req.files.file, 'profile')
         file_info.admin_id = id
@@ -140,7 +147,7 @@ const updateAdmin = async(req, res) => {
           res.status(500).send('Something went wrong!')
         })
       }
-      res.status(200).send('Update Successful');
+      res.status(200).send('Updated Successfuly');
   })
   .catch( async(err) => {
     console.log(err)
