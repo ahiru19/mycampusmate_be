@@ -16,7 +16,7 @@ const AuthToken = async (req, res, next) => {
                 user_id = user.user_id
                 let user_info = await User.findOne({
                     where:{id:user_id},
-                    attributes:['id','usertype']
+                    attributes:['id','username','email','usertype']
                 })
                 req.user_info = user_info
                 next();
