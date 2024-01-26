@@ -11,6 +11,20 @@ const path = require("path");
 
 const register = async (req, res) => {
   let body = req.body;
+  console.log(body);
+  const d = new Date();
+    const birthdate = new Date(body.birth_date);
+    let curr_year = d.getFullYear();
+    let birth_year = birthdate.getFullYear();
+
+    body.age = parseInt(curr_year) - parseInt(birth_year); //get the age
+
+    let curr_month = d.getMonth();
+    let birth_month = birthdate.getMonth();
+
+    if(birth_month > curr_month){
+      body.age = body.age - 1;//if birth month does not come yet minus 1
+    }
   
   bcrypt.hash(body.password, 12).then( async (hash) => {
       body.password = hash;
@@ -153,6 +167,9 @@ const getOneUser = async(req, res) => {
     ]
   })
     .then( (user)=>{
+      if(user.admin_profile){
+        user.admin_profile.file_path = user.admin_profile.file_path + '/' + user.admin_profile.file_rand_name;
+      }
         res.status(200).send(user)
     })
     .catch( (err) => {
@@ -174,6 +191,9 @@ const getOneUser = async(req, res) => {
     
     })
     .then( (user)=>{
+        if(user.student_profile){
+          user.student_profile.file_path = user.student_profile.file_path + '/' + user.student_profile.file_rand_name;
+        }
         res.status(200).send(user)
     })
     .catch( (err) => {

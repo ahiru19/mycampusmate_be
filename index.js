@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const {AuthToken} = require("./middleware/midware");
 const app = express();
 const cors = require('cors');
+const path = require("path");
 
 app.use(express.json()); // This is for the body to be recognized
 app.use(cookieParser());
@@ -20,6 +21,7 @@ app.use(fileupload({ //this is to use the file and give size of the file
     limits: { fileSize: 10 * 1024 * 1024 },
 }));
 
+app.use("/public/profile", express.static(path.join(__dirname, '/public/profile/')));
 
 //register all routes
 appRoutes.forEach((item) => {
