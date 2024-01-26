@@ -137,16 +137,19 @@ const updateAdmin = async(req, res) => {
   await Admin.update(body, {where:{user_id:id}})
   .then( async () => {
       if(req.files) {
-        let file_info = await getFileInfo(req.files.file, 'profile')
-        file_info.admin_id = id
 
+        let admin = await Admin.findOne({where:{user_id:id}});
+        let file_info = await getFileInfo(req.files.file, 'profile')
+        file_info.admin_id = admin.id
+        
         await userProfile.upsert({...file_info})
         .then( async()=> {
-          await files.file.mv(`./public/profile/${file_info.file_rand_name}`);
+          await req.files.file.mv(`./public/profile/${file_info.file_rand_name}`);
         })
         .catch( async(err) => {
           console.log(err)
           res.status(500).send('Something went wrong!')
+          return 0;
         })
       }
       res.status(200).send('Updated Successfuly');
@@ -154,6 +157,7 @@ const updateAdmin = async(req, res) => {
   .catch( async(err) => {
     console.log(err)
     res.status(500).send('Something went wrong!')
+    return 0;
   })
 }
 
