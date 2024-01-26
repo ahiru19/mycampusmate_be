@@ -71,10 +71,10 @@ const Student = sequelize.define("student", {
         allowNull: true,
     },
 
-    program: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
+    // program: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    // },
 
     // acad_year: {
     //     type: DataTypes.STRING,
