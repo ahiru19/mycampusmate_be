@@ -127,7 +127,7 @@ const updateAdmin = async(req, res) => {
   let body = req.body;
 
   if(body.password){
-    body.password = bcrypt.hash(body.password, 12)
+    body.password = await bcrypt.hash(body.password, 12)
   }
 
   //update for the user
