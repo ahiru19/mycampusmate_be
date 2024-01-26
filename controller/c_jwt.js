@@ -149,6 +149,7 @@ const getOneUser = async(req, res) => {
         res.status.send(user)
     })
     .catch( (err) => {
+      console.log(err)
       res.status(500).send(err)
       return 0;
     })
@@ -169,6 +170,7 @@ const getOneUser = async(req, res) => {
         res.status(200).send(user)
     })
     .catch( (err) => {
+      console.log(err)
       res.status(500).send(err)
       return 0;
     })
