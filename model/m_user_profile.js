@@ -13,10 +13,15 @@ const userProfile = sequelize.define("user_profile", {
         autoIncrement: true,
     },
 
-    user_id: {
+    student_id: {
         type: DataTypes.INTEGER.UNSIGNED,
         unique: true,
-        allowNull: false,
+        allowNull: true,
+    },
+    admin_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        unique: true,
+        allowNull: true,
     },
 
     file_path: {

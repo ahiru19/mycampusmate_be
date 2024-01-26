@@ -40,12 +40,14 @@ const register = async (req, res) => {
       await User.create({ ...body })
       .then( async (user) => {
         
-        body.user_id = user.id;
+        
 
         if(body.usertype == 1){
+          body.admin_id = user.id;
           await Admin.create({ ...body})
         }
         else{
+          body.student_id = user.id;
           await Student.create({ ...body})
           .then( async(student)=> {
             if(req.files){
