@@ -30,6 +30,11 @@ const Student = sequelize.define("student", {
         allowNull: false,
     },
 
+    name_extension: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+
     age: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -56,10 +61,21 @@ const Student = sequelize.define("student", {
         allowNull: true,
     },
 
+    emergency_contact: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+
+    student_num: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+
     program: {
         type: DataTypes.STRING,
         allowNull: true,
     },
+
     acad_year: {
         type: DataTypes.STRING,
         allowNull: true,
