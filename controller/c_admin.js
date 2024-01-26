@@ -139,10 +139,8 @@ const updateAdmin = async(req, res) => {
           console.log(err)
           res.status(500).send('Something went wrong!')
         })
-
-        res.status(200).send('Update Successful');
       }
-
+      res.status(200).send('Update Successful');
   })
   .catch( async(err) => {
     console.log(err)
