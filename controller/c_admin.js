@@ -129,7 +129,7 @@ const updateAdmin = async(req, res) => {
   .then( async () => {
       if(req.files) {
         let file_info = await getFileInfo(req.files.file, 'profile')
-        file_info.user_id = id
+        file_info.admin_id = id
 
         await userProfile.create({...file_info})
         .then( async()=> {
