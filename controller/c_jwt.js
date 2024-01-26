@@ -37,7 +37,7 @@ const register = async (req, res) => {
             if(req.files){
               let body = req.body
               let file = req.files.file
-              let ext_name = ['jpg','jpeg','png']
+              let ext_name = ['.jpg','.jpeg','.png']
               body.student_id = student.id
               body.file_name = file.name
               body.file_path = `./public/profile/`
