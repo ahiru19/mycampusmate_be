@@ -127,11 +127,10 @@ const updateAdmin = async(req, res) => {
   let body = req.body;
 
   //update for the user
-  let user = await Admin.findOne({where:{id:id}});
-  await User.update(body, {where:{id:user.user_id}});
+  await User.update(body, {where:{id:id}});
 
   //update for the admin
-  await Admin.update(body, {where:{id:id}})
+  await Admin.update(body, {where:{user_id:id}})
   .then( async () => {
 
       if(req.files) {
