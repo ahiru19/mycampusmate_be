@@ -5,7 +5,7 @@ const { sign, verify } = require("jsonwebtoken");
 const {User} = require("../model/m_user");
 const {Student} = require("../model/m_student");
 const {Admin} = require("../model/m_admin");
-const {studentProfile} = require("../model/m_user_profile");
+const {userProfile} = require("../model/m_user_profile");
 const {authToken} = require("../model/m_auth");
 
 const register = async (req, res) => {
@@ -135,7 +135,16 @@ const getOneUser = async(req, res) => {
   let usertype = req.user_info.usertype
 
   if(usertype == 1){
-    await Admin.findOne({where:{user_id:id}})
+    await Admin.findOne({
+      where:{user_id:id},
+      include: [
+        {
+            model: userProfile,
+            attributes: ['file_path', 'file_rand_name', 'file_name'],
+            as: "admin_profile"
+        },
+    ]
+  })
     .then( (user)=>{
         res.status.send(user)
     })
