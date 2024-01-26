@@ -4,7 +4,6 @@ const {Student} = require ("../model/m_student")
 const {userProfile} = require("../model/m_user_profile")
 const {Admin} = require("../model/m_admin")
 const {getFileInfo} = require("../helper/helper")
-const bcrypt = require('bcrypt');
 
 const createStudent = async (req, res) => {
     let body = req.body;
@@ -130,7 +129,7 @@ const updateAdmin = async(req, res) => {
   if(body.password){
     body.password = bcrypt.hash(body.password, 12)
   }
-  
+
   //update for the user
   await User.update(body, {where:{id:id}});
 
@@ -141,7 +140,7 @@ const updateAdmin = async(req, res) => {
         let file_info = await getFileInfo(req.files.file, 'profile')
         file_info.admin_id = id
 
-        await userProfile.create({...file_info})
+        await userProfile.upsert({...file_info})
         .then( async()=> {
           await files.file.mv(`./public/profile/${file_info.file_rand_name}`);
         })
