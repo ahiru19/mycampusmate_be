@@ -167,7 +167,9 @@ const getOneUser = async(req, res) => {
     ]
   })
     .then( async (user)=>{
-      let user_acc = await User.findOne({ where: {id:user.user_id}});
+      let id = user.user_id
+      let user_acc = await User.findOne({ where: {id:id}});
+      
       user.email = user_acc.email
       user.username = user_acc.username
       if(user.admin_profile){
@@ -194,7 +196,8 @@ const getOneUser = async(req, res) => {
     
     })
     .then( async (user)=>{
-        let user_acc = await User.findOne({ where: {id:user.user_id}});
+        let id = user.user_id
+        let user_acc = await User.findOne({ where: {id:id}});
         user.email = user_acc.email
         user.username = user_acc.username
 
