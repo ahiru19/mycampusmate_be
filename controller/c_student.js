@@ -4,7 +4,6 @@ const path = require("path");
 
 const getStudents = async(req, res) => {
     let users = await Student.findAll({
-        where: {usertype: 1},
         attributes:{exclude:['updatedAt']}
     });
 

@@ -53,7 +53,6 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  
 
   await User.findOne({where: {username: req.body.username, is_approved:1}}).then(async (user)=> {
 
@@ -111,8 +110,9 @@ const logout = async (req, res) => {
 };
 
 const getOneUser = async(req, res) => {
-  let id = req.query.id;
-  let usertype = req.query.usertype;
+  let id = req.user_info.id;
+  let usertype = req.user_info.usertype
+
   if(usertype == 1){
     await Admin.findOne({where:{user_id:id}})
     .then( (user)=>{

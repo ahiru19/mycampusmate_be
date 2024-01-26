@@ -20,9 +20,21 @@ app.use(fileupload({ //this is to use the file and give size of the file
     limits: { fileSize: 10 * 1024 * 1024 },
 }));
 
+
+
 //register all routes
 appRoutes.forEach((route) => {
+    const jwt_exclude = [
+        'jwt/register/',
+        'jwt/login/'
+    ]
+    if(jwt_exclude.includes(route.path)){
+        app[route.method](route.path, route.action);
+    }
+    else {
         app[route.method](route.path, AuthToken, route.action);
+    }
+       
 });
 
 
