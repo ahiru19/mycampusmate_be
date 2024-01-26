@@ -1,8 +1,13 @@
 const {authToken} = require("../model/m_auth")
 const {User} = require("../model/m_user")
 const AuthToken = async (req, res, next) => {
-        if(!req.headers.authorization){ // check if there is a token
-            res.send('No Token Found!').status(500)
+        let route_exclude = ['/jwt/login/', '/jwt/register/'];
+
+        if(route_exclude.includes(req.url)){
+            next();
+        }
+        else if(!req.headers.authorization){ // check if there is a token
+            res.status(500).send('No Token Found!')
         }
         else{
             let token = req.headers.authorization.split(" ")[1];

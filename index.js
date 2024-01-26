@@ -21,21 +21,10 @@ app.use(fileupload({ //this is to use the file and give size of the file
 }));
 
 
-
 //register all routes
-appRoutes.forEach((route) => {
-    const jwt_exclude = [
-        'jwt/register/',
-        'jwt/login/'
-    ]
-    if(jwt_exclude.includes(route.path)){
-        app[route.method](route.path, route.action);
-    }
-    else {
-        app[route.method](route.path, AuthToken, route.action);
-    }
-       
-});
+appRoutes.forEach((item) => {
+      app[item.method](item.path, AuthToken, item.action);
+  });
 
 
 // listening
