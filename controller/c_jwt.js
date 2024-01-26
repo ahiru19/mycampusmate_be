@@ -166,7 +166,10 @@ const getOneUser = async(req, res) => {
         },
     ]
   })
-    .then( (user)=>{
+    .then( async (user)=>{
+      let user_acc = await User.findOne({ where: {id:user.user_id}});
+      user.email = user_acc.email
+      user.username = user_acc.username
       if(user.admin_profile){
         user.admin_profile.file_path = user.admin_profile.file_path + '/' + user.admin_profile.file_rand_name;
       }
@@ -190,7 +193,11 @@ const getOneUser = async(req, res) => {
     ]
     
     })
-    .then( (user)=>{
+    .then( async (user)=>{
+        let user_acc = await User.findOne({ where: {id:user.user_id}});
+        user.email = user_acc.email
+        user.username = user_acc.username
+
         if(user.student_profile){
           user.student_profile.file_path = user.student_profile.file_path + '/' + user.student_profile.file_rand_name;
         }
