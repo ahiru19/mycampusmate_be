@@ -51,6 +51,11 @@ const register = async (req, res) => {
               .then( async(user)=> {
                   await file.mv(`./public/profile/${body.file_rand_name}`);
               })
+              .catch( async (err) => {
+                if (err) {
+                    res.status(400).send({ error: err });
+                }
+              });
             }
 
           })
@@ -61,12 +66,12 @@ const register = async (req, res) => {
           message:"User Registered Successfuly",
         }
 
-        res.json(result);
+        res.send(result);
       })
 
       .catch( async (err) => {
         if (err) {
-            res.status(400).json({ error: err });
+            res.status(400).send({ error: err });
         }
       });
 
