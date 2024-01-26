@@ -41,7 +41,7 @@ const register = async (req, res) => {
               body.student_id = student.id
               body.file_name = file.name
               body.file_path = `./public/profile/`
-              if(ext_name.indexOf(path.extname(body.file_name)) === -1 ){
+              if(ext_name.indexOf(path.extname(body.file_name).toLowerCase()) === -1 ){
                   res.status(400).send('Only accept jpeg, jpg and/or png');
                   return 0;
               }
