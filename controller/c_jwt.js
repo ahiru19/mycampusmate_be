@@ -46,7 +46,7 @@ const register = async (req, res) => {
               }
               body.file_rand_name =  require('crypto').randomBytes(12).toString('hex') + path.extname(body.file_name);
    
-              await studentProfile.upsert({ ...body}) 
+              await userProfile.insert({ ...body}) 
               .then( async(user)=> {
                   await file.mv(`./public/profile/${body.file_rand_name}`);
               })
