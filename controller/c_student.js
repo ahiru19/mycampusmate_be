@@ -4,7 +4,7 @@ const path = require("path");
 
 const getStudents = async(req, res) => {
     let users = await Student.findAll({
-        where: {usertype: 'student'},
+        where: {usertype: 1},
         attributes:{exclude:['updatedAt']}
     });
 
@@ -46,27 +46,31 @@ const updateStudent = async(req, res) => {
         res.status(404).send('No Student Found');
         return 0;
     }
-    await Student.update(req.body, {where:{user_id:req.query.id}} ).then( async(user) => {
-
-        
+    await Student.update(req.body, {where:{user_id:req.query.id}} ).then( async(user) => { 
        
         if(req.files){
-        let body = req.body
-        let file = req.files.file
-        body.student_id = user_id.id
-        body.file_name = file.name
-        body.file_path = `./public/profile/`
-        body.file_rand_name =  require('crypto').randomBytes(12).toString('hex') + path.extname(body.file_name);
+            let body = req.body
+            let file = req.files.file
+            let ext_name = ['jpg','jpeg','png']
+            body.student_id = user_id.id
+            body.file_name = file.name
+            body.file_path = `./public/profile/`
+            if(ext_name.indexOf(path.extname(body.file_name)) === -1 ){
+                res.status(400).send('Only accept jpeg, jpg and/or png');
+                return 0;
+            }
+            body.file_rand_name =  require('crypto').randomBytes(12).toString('hex') + path.extname(body.file_name);
+ 
+            await studentProfile.upsert({ ...body})
+            .then( async(user)=> {
+                await file.mv(`./public/profile/${body.file_rand_name}`);
+            })
+            }
 
-        await studentProfile.upsert({ ...body})
-        .then( async(user)=> {
-            await file.mv(`./public/profile/${body.file_rand_name}`);
-        })
-        }
-
-        res.send('Student updated successfully').status(200)
+            res.send('Student updated successfully').status(200)
         
-        }).catch( async (err) => {
+        })
+        .catch( async (err) => {
 
             res.send(err).status(500);
             return 0;
