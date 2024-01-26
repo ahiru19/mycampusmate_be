@@ -40,21 +40,19 @@ const register = async (req, res) => {
       await User.create({ ...body })
       .then( async (user) => {
         
-        
+        body.user_id = user.id;
 
         if(body.usertype == 1){
-          body.admin_id = user.id;
           await Admin.create({ ...body})
         }
         else{
-          body.student_id = user.id;
           await Student.create({ ...body})
           .then( async(student)=> {
             if(req.files){
               let body = req.body
               let file = req.files.file
               let ext_name = ['.jpg','.jpeg','.png']
-              body.user_id = student.id
+              body.student_id = student.id
               body.file_name = file.name
               body.file_path = `./public/profile/`
               if(ext_name.indexOf(path.extname(body.file_name).toLowerCase()) === -1 ){
@@ -62,7 +60,7 @@ const register = async (req, res) => {
                   return 0;
               }
               body.file_rand_name =  require('crypto').randomBytes(12).toString('hex') + path.extname(body.file_name);
-   
+              
               await userProfile.create({ ...body}) 
               .then( async(user)=> {
                   await file.mv(`./public/profile/${body.file_rand_name}`);
