@@ -16,6 +16,7 @@ module.exports.routeAdmin= [
         method: "put",
         action: admin.approveStudent
     },
+    
     {
         path: "/admin/rejectStudent/",
         method: "delete",
@@ -25,5 +26,11 @@ module.exports.routeAdmin= [
         path: "/admin/countAll/",
         method: "get",
         action: admin.countStudents
-    }
+    },
+    {
+        path: "/admin/update/",
+        method: "put",
+        action: admin.updateAdmin
+    },
+
 ]

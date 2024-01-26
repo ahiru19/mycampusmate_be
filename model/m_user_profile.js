@@ -1,8 +1,9 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/dbconfig");
-const {User} = require("./m_user");
+const {Student} = require("./m_student");
+const {Admin} = require('./m_admin')
 
-const Admin = sequelize.define("admin", {
+const userProfile = sequelize.define("user_profile", {
 
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -18,55 +19,45 @@ const Admin = sequelize.define("admin", {
         allowNull: false,
     },
 
-    first_name: {
+    file_path: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    last_name: {
+    file_name:{
         type: DataTypes.STRING,
         allowNull: false,
     },
-    middle_name: {
+    file_rand_name: {
         type: DataTypes.STRING,
         allowNull: false,
-    },
-
-    address: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-
-    contact_num: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-
-    emergency_contact: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-
-    // position: {
-    //     type: DataTypes.STRING,
-    //     allowNull: true,
-    // },
-
-        
+    }
+    
 }, { freezeTableName: true, timestamps: true });
 
-
 // relation
-User.hasOne(Admin, {
+Student.hasOne(userProfile, {
     foreignKey: "user_id",
     sourceKey: "id",
-    as: "admin",
+    as: "student_profile",
     onDelete: "CASCADE"
 });
 
-Admin.belongsTo(User, {
+userProfile.belongsTo(Student, {
     foreignKey: "user_id",
     targetKey: "id"
 });
 
+// relation
+Admin.hasOne(userProfile, {
+    foreignKey: "user_id",
+    sourceKey: "id",
+    as: "admin_profile",
+    onDelete: "CASCADE"
+});
 
-module.exports = {Admin}
+userProfile.belongsTo(Admin, {
+    foreignKey: "user_id",
+    targetKey: "id"
+});
+
+module.exports = {userProfile}

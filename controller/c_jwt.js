@@ -5,7 +5,7 @@ const { sign, verify } = require("jsonwebtoken");
 const {User} = require("../model/m_user");
 const {Student} = require("../model/m_student");
 const {Admin} = require("../model/m_admin");
-const {studentProfile} = require("../model/m_student_profile");
+const {studentProfile} = require("../model/m_user_profile");
 const {authToken} = require("../model/m_auth");
 
 const register = async (req, res) => {

@@ -1,5 +1,5 @@
 const {Student} = require("../model/m_student");
-const {studentProfile} = require("../model/m_student_profile");
+const {studentProfile} = require("../model/m_user_profile");
 const path = require("path");
 
 const getStudents = async(req, res) => {

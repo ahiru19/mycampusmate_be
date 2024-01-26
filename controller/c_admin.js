@@ -1,6 +1,9 @@
 const bcrypt = require('bcrypt');
 const {User} = require("../model/m_user");
 const {Student} = require ("../model/m_student")
+const {userProfile} = require("../model/m_user_profile")
+const {Admin} = require("../model/m_admin")
+const {getFileInfo} = require("../helper/helper")
 
 const createStudent = async (req, res) => {
     let body = req.body;
@@ -119,5 +122,33 @@ const countStudents = async(req, res) => {
   
 }
 
+const updateAdmin = async(req, res) => {
+  let id = req.user_info.id;
 
-module.exports = { createStudent, getStudents, approveStudent, rejectStudent, countStudents};
+  await Admin.update(req.body, {where:{id}})
+  .then( async () => {
+      if(req.files) {
+        let file_info = await getFileInfo(req.files.file, 'profile')
+        file_info.user_id = id
+
+        await userProfile.create({...file_info})
+        .then( async()=> {
+          await files.file.mv(`./public/profile/${file_info.file_rand_name}`);
+        })
+        .catch( async(err) => {
+          console.log(err)
+          res.status(500).send('Something went wrong!')
+        })
+
+        res.status(200).send('Update Successful');
+      }
+
+  })
+  .catch( async(err) => {
+    console.log(err)
+    res.status(500).send('Something went wrong!')
+  })
+}
+
+
+module.exports = { createStudent, getStudents, approveStudent, rejectStudent, countStudents, updateAdmin};
