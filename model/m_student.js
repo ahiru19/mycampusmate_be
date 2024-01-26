@@ -104,7 +104,8 @@ User.hasOne(Student, {
 
 Student.belongsTo(User, {
     foreignKey: "user_id",
-    targetKey: "id"
+    targetKey: "id",
+    as:"user_student"
 });
 
 

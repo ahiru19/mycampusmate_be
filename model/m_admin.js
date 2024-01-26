@@ -65,7 +65,8 @@ User.hasOne(Admin, {
 
 Admin.belongsTo(User, {
     foreignKey: "user_id",
-    targetKey: "id"
+    targetKey: "id",
+    as:"user_admin"
 });
 
 

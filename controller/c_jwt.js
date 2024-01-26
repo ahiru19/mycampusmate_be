@@ -164,14 +164,16 @@ const getOneUser = async(req, res) => {
             attributes: ['file_path', 'file_rand_name', 'file_name'],
             as: "admin_profile"
         },
+        {
+          model: User,
+          attributes: ['email', 'username'],
+          as: "user_admin"
+      },
     ]
   })
     .then( async (user)=>{
       let id = user.user_id
-      let user_acc = await User.findOne({ where: {id:id}});
-      
-      user.email = user_acc.email
-      user.username = user_acc.username
+
       if(user.admin_profile){
         user.admin_profile.file_path = user.admin_profile.file_path + '/' + user.admin_profile.file_rand_name;
       }
@@ -192,6 +194,11 @@ const getOneUser = async(req, res) => {
             attributes: ['file_path', 'file_rand_name', 'file_name'],
             as: "student_profile"
         },
+        {
+          model: User,
+          attributes: ['email', 'username'],
+          as: "user_student"
+      },
     ]
     
     })
@@ -216,7 +223,6 @@ const getOneUser = async(req, res) => {
     res.status(404).send('Usertype not found!')
   }
 }
-
 
 
   
