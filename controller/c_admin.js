@@ -167,7 +167,11 @@ const updateAdmin = async(req, res) => {
               }
               ]
     });
-    
+
+    if(admin.admin_profile){
+      admin.admin_profile.file_path = admin.admin_profile.file_path + admin.admin_profile.file_rand_name;
+    }
+
       res.status(200).send(admin);
   })
   .catch( async(err) => {
