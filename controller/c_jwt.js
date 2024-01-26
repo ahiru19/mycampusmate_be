@@ -38,7 +38,7 @@ const register = async (req, res) => {
               let body = req.body
               let file = req.files.file
               let ext_name = ['.jpg','.jpeg','.png']
-              body.student_id = student.id
+              body.user_id = student.id
               body.file_name = file.name
               body.file_path = `./public/profile/`
               if(ext_name.indexOf(path.extname(body.file_name).toLowerCase()) === -1 ){
