@@ -152,7 +152,22 @@ const updateAdmin = async(req, res) => {
           return 0;
         })
       }
-      res.status(200).send('Updated Successfuly');
+      let admin = Admin.findOne({
+        where:{user_id:id},
+        include:[
+              {
+                model: userProfile,
+                attributes: ['file_path', 'file_rand_name', 'file_name'],
+                as: "admin_profile"
+              },
+              {
+                model: User,
+                attributes: ['email', 'username'],
+                as: "user_admin"
+              }
+              ]
+    });
+      res.status(200).send(admin);
   })
   .catch( async(err) => {
     console.log(err)
