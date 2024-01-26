@@ -7,6 +7,7 @@ const {Student} = require("../model/m_student");
 const {Admin} = require("../model/m_admin");
 const {userProfile} = require("../model/m_user_profile");
 const {authToken} = require("../model/m_auth");
+const path = require("path");
 
 const register = async (req, res) => {
   let body = req.body;
