@@ -158,7 +158,7 @@ const getOneUser = async(req, res) => {
       where:{user_id:id},
       include: [
         {
-            model: studentProfile,
+            model: userProfile,
             attributes: ['file_path', 'file_rand_name', 'file_name'],
             as: "student_profile"
         },
