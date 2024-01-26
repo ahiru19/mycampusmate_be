@@ -76,22 +76,22 @@ const Student = sequelize.define("student", {
         allowNull: true,
     },
 
-    acad_year: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    school_year: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    is_regular: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-    },
-    current_year: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    }
+    // acad_year: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    // },
+    // school_year: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    // },
+    // is_regular: {
+    //     type: DataTypes.BOOLEAN,
+    //     allowNull: true,
+    // },
+    // current_year: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    // }
 }, { freezeTableName: true, timestamps: true });
 
 // relation
