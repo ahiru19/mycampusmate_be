@@ -128,6 +128,8 @@ const updateAdmin = async(req, res) => {
 
   if(body.password){
     body.password = await bcrypt.hash(body.password, 12)
+  }else {
+    delete body.password;
   }
 
   //update for the user
