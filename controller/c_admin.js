@@ -114,7 +114,7 @@ const getOneStudent = async(req, res) => {
       {
         model:userProfile,
         as:'student_profile',
-        attributes: ['file_name']
+        attributes: ['file_name', 'file_path', 'file_rand_name']
       }
     ]
   })
