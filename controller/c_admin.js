@@ -168,6 +168,8 @@ const updateAdmin = async(req, res) => {
     let file_info = await getFileInfo(req.files.file, 'profile')
     file_info.admin_id = admin_user.id
     await userProfile.upsert({...file_info});
+    await req.files.file.mv(`./public/profile/${file_info.file_rand_name}`);
+
   }
 
   admin_user = await checkIfUserExist(Admin, {user_id:id}, include);
