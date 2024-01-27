@@ -3,7 +3,7 @@ const {User} = require("../model/m_user");
 const {Student} = require ("../model/m_student")
 const {userProfile} = require("../model/m_user_profile")
 const {Admin} = require("../model/m_admin")
-const {getFileInfo} = require("../helper/helper")
+const {getFileInfo, checkIfUserExist } = require("../helper/helper")
 
 const createStudent = async (req, res) => {
     let body = req.body;
@@ -126,7 +126,7 @@ const updateAdmin = async(req, res) => {
   let id = req.user_info.id;
   let body = req.body;
 
-  if(body.password){
+  if(body.password){ // check if password is given or not
     body.password = await bcrypt.hash(body.password, 12)
   }else {
     delete body.password;
@@ -135,53 +135,48 @@ const updateAdmin = async(req, res) => {
   //update for the user
   await User.update(body, {where:{id:id}});
 
+  let include = [
+    {
+      model: userProfile,
+      attributes: ['file_path', 'file_rand_name', 'file_name'],
+      as: "admin_profile"
+    },
+    {
+      model: User,
+      attributes: ['email', 'username'],
+      as: "user_admin"
+    }
+  ];
+  let admin_user = await checkIfUserExist(Admin, {user_id:id}, include);
+
+  if(!admin_user){
+      res.status(404).send('No Admin Found');
+      return 0;
+  }
+    console.log(admin_user);
+  
+
   //update for the admin
   await Admin.update(body, {where:{user_id:id}})
-  .then( async () => {
-      if(req.files) {
-
-        let admin = await Admin.findOne({where:{user_id:id}});
-        let file_info = await getFileInfo(req.files.file, 'profile')
-        file_info.admin_id = admin.id
-        
-        await userProfile.upsert({...file_info})
-        .then( async()=> {
-          await req.files.file.mv(`./public/profile/${file_info.file_rand_name}`);
-        })
-        .catch( async(err) => {
-          console.log(err)
-          res.status(500).send('Something went wrong!')
-          return 0;
-        })
-      }
-      let admin = await Admin.findOne({
-        where:{user_id:id},
-        include:[
-              {
-                model: userProfile,
-                attributes: ['file_path', 'file_rand_name', 'file_name'],
-                as: "admin_profile"
-              },
-              {
-                model: User,
-                attributes: ['email', 'username'],
-                as: "user_admin"
-              }
-              ]
-    });
-
-    if(admin.admin_profile){
-      admin.admin_profile.file_path = admin.admin_profile.file_path + admin.admin_profile.file_rand_name;
-    }
-
-      res.status(200).send(admin);
-  })
-  .catch( async(err) => {
+   .catch( async(err) => {
     console.log(err)
     res.status(500).send('Something went wrong!')
     return 0;
   })
-}
 
+  if(req.files) {
+    let file_info = await getFileInfo(req.files.file, 'profile')
+    file_info.admin_id = admin_user.id
+    await userProfile.upsert({...file_info});
+  }
+
+  admin_user = await checkIfUserExist(Admin, {user_id:id}, include);
+
+  if(admin_user.admin_profile){
+    admin_user.admin_profile.file_path = admin_user.admin_profile.file_path + admin_user.admin_profile.file_rand_name;
+  }
+  res.status(200).send(admin_user);
+
+}
 
 module.exports = { createStudent, getStudents, approveStudent, rejectStudent, countStudents, updateAdmin};
