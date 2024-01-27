@@ -12,6 +12,11 @@ module.exports.routeAdmin= [
         action: admin.getStudents
     },
     {
+        path: "/admin/getOneStudent/",
+        method: "get",
+        action: admin.getOneStudent
+    },
+    {
         path: "/admin/approveStudent/",
         method: "put",
         action: admin.approveStudent

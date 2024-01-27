@@ -106,6 +106,31 @@ const getStudents = async(req, res) => {
     res.send(users);
 }
 
+const getOneStudent = async(req, res) => {
+
+  let user = await Student.findOne({ 
+    where: {user_id:req.query.id},
+    include:[
+      {
+        model:userProfile,
+        as:'student_profile',
+        attributes: ['file_name']
+      }
+    ]
+  })
+  .catch(async(err)=> {
+    console.log(err);
+    res.status(500).send('Something went wrong');
+  })
+
+  if(user.student_profile){
+    user.student_profile.file_path = user.student_profile.file_path + user.student_profile.file_path.file_rand_name
+  }
+
+  res.send(user);
+}
+
+
 const countStudents = async(req, res) => {
 
   let user_pending = await User.count({ where: {is_approved: 0}});
@@ -181,4 +206,4 @@ const updateAdmin = async(req, res) => {
 
 }
 
-module.exports = { createStudent, getStudents, approveStudent, rejectStudent, countStudents, updateAdmin};
+module.exports = { createStudent, getStudents, approveStudent, rejectStudent, countStudents, updateAdmin, getOneStudent};
