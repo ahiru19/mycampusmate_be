@@ -93,11 +93,11 @@ const rejectStudent = async (req, res) => {
 const getStudents = async(req, res) => {
     let users = await User.findAll({
         where: {usertype: 2},
-        attributes:['id','username','usertype'],
+        attributes:['id','username','usertype', 'is_approved'],
         include:[
           {
             model: Student,
-            attributes: ['first_name', 'last_name', 'middle_name'],
+            attributes: ['id','first_name', 'last_name', 'middle_name','age','address'],
             as: "student"
         },
         ]
