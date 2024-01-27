@@ -1,5 +1,6 @@
 const {Student} = require("../model/m_student");
-const {studentProfile} = require("../model/m_user_profile");
+const {userProfile} = require("../model/m_user_profile");
+const {getFileInfo, calculateAge, checkIfUserExist} = require("../helper/helper")
 const path = require("path");
 
 const getStudents = async(req, res) => {
@@ -26,54 +27,33 @@ const createStudent = async (req, res) => {
 
 const updateStudent = async(req, res) => {
     
-    const d = new Date();
-    const birthdate = new Date(req.body.birthdate);
-    let curr_year = d.getFullYear();
-    let birth_year = birthdate.getFullYear();
-
-    req.body.age = parseInt(curr_year) - parseInt(birth_year); //get the age
-
-    let curr_month = d.getMonth();
-    let birth_month = birthdate.getMonth();
-
-    if(birth_month > curr_month){
-        req.body.age = req.body.age - 1;//if birth month does not come yet minus 1
-    }
-    let user_id = await Student.findOne({where:{user_id:req.query.id}, attributes:['id']});
-
-    if(!user_id){
+    req.body.age = await calculateAge(req.body.birthdate);//calculate the birthdate
+  
+    let student = await checkIfUserExist(Student, {user_id:1}, null) //check if student exist and return the data
+    if(!student){
         res.status(404).send('No Student Found');
         return 0;
     }
-    await Student.update(req.body, {where:{user_id:req.query.id}} ).then( async(user) => { 
-       
-        if(req.files){
-            let body = req.body
-            let file = req.files.file
-            let ext_name = ['jpg','jpeg','png']
-            body.student_id = user_id.id
-            body.file_name = file.name
-            body.file_path = `./public/profile/`
-            if(ext_name.indexOf(path.extname(body.file_name)) === -1 ){
-                res.status(400).send('Only accept jpeg, jpg and/or png');
-                return 0;
-            }
-            body.file_rand_name =  require('crypto').randomBytes(12).toString('hex') + path.extname(body.file_name);
- 
-            await studentProfile.upsert({ ...body})
-            .then( async(user)=> {
-                await file.mv(`./public/profile/${body.file_rand_name}`);
-            })
-            }
+    
+    await Student.update(req.body, {where:{user_id:req.user_info.id}} )//update student and return if there is an error
+    .catch( async (err) => {
+        console.log(err)
+        res.status(500).send(err);
+        return 0;
+    });
 
-            res.send('Student updated successfully').status(200)
+    if(req.files){//check for files and upload the files
+        let file_info = await getFileInfo(req.files.file,'profile');
+        file_info.student_id = student.id;
         
-        })
-        .catch( async (err) => {
 
-            res.send(err).status(500);
-            return 0;
-        });
+        await userProfile.upsert({ ...file_info})// insert the data of the files in the database
+                .then( async()=> {
+                    await req.files.file.mv(`./public/profile/${file_info.file_rand_name}`);
+                })
+    }
+
+    res.status(200).send('Student updated successfully');
 }
 
 const deleteStudent = async(req, res) => {

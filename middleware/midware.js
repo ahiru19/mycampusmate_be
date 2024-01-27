@@ -8,6 +8,7 @@ const AuthToken = async (req, res, next) => {
         }
         else if(!req.headers.authorization){ // check if there is a token
             res.status(500).send('No Token Found!')
+            return 0;
         }
         else{
             let token = req.headers.authorization.split(" ")[1];
