@@ -53,12 +53,11 @@ const register = async (req, res) => {
 
               await userProfile.create({ ...file_info}) 
               .then( async(user)=> {
-                  await file.mv(`./public/profile/${body.file_rand_name}`);
+                  await req.files.file.mv(`./public/profile/${body.file_rand_name}`);
               })
               .catch( async (err) => {
-                if (err) {
+                    console.log(err)
                     res.status(400).send({ error: err });
-                }
               });
             }
 
