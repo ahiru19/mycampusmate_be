@@ -7,31 +7,20 @@ const {Student} = require("../model/m_student");
 const {Admin} = require("../model/m_admin");
 const {userProfile} = require("../model/m_user_profile");
 const {authToken} = require("../model/m_auth");
+const {getFileInfo, calculateAge} = require("../helper/helper");
 const path = require("path");
 
 const register = async (req, res) => {
   let body = req.body;
-  console.log(body);
-  const d = new Date();
-    const birthdate = new Date(body.birth_date);
-    let curr_year = d.getFullYear();
-    let birth_year = birthdate.getFullYear();
 
-    body.age = parseInt(curr_year) - parseInt(birth_year); //get the age
-
-    let curr_month = d.getMonth();
-    let birth_month = birthdate.getMonth();
-
-    if(birth_month > curr_month){
-      body.age = body.age - 1;//if birth month does not come yet minus 1
-    }
+  body.age = await calculateAge(body.birth_date);
   
   bcrypt.hash(body.password, 12).then( async (hash) => {
       body.password = hash;
 
 
       let if_exist = await User.findOne({where:{username:body.username}});
-      console.log(if_exist);
+      
       if(if_exist){
         res.status(400).send('Username is already taken!');
         return 0;
@@ -50,18 +39,19 @@ const register = async (req, res) => {
           .then( async(student)=> {
             if(req.files){
               let body = req.body
-              let file = req.files.file
+
               let ext_name = ['.jpg','.jpeg','.png']
-              body.student_id = student.id
-              body.file_name = file.name
-              body.file_path = `./public/profile/`
-              if(ext_name.indexOf(path.extname(body.file_name).toLowerCase()) === -1 ){
-                  res.status(400).send('Only accept jpeg, jpg and/or png');
-                  return 0;
+
+              let file_info = await getFileInfo(req.files.file, 'profile')
+
+              if(ext_name.indexOf(path.extname(file_info.file_name).toLowerCase()) === -1 ){
+                res.status(400).send('Only accept jpeg, jpg and/or png');
+                return 0;
               }
-              body.file_rand_name =  require('crypto').randomBytes(12).toString('hex') + path.extname(body.file_name);
-              
-              await userProfile.create({ ...body}) 
+
+              file_info.student_id = student.id
+
+              await userProfile.create({ ...file_info}) 
               .then( async(user)=> {
                   await file.mv(`./public/profile/${body.file_rand_name}`);
               })
