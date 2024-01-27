@@ -124,7 +124,7 @@ const getOneStudent = async(req, res) => {
   })
 
   if(user.student_profile){
-    user.student_profile.file_path = user.student_profile.file_path + user.student_profile.file_path.file_rand_name
+    user.student_profile.file_path = user.student_profile.file_path + user.student_profile.file_rand_name
   }
 
   res.send(user);
