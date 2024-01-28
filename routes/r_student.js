@@ -7,8 +7,16 @@ module.exports.routeStudent= [
         action: student.getStudents
     },
     {
+        path: "/student/getOneStudent/",
+        method: "put",
+        action: student.getOneStudent
+    },
+    {
         path: "/student/update/",
         method: "put",
         action: student.updateStudent
     },
+    
+
+    
 ]

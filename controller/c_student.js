@@ -11,6 +11,23 @@ const getStudents = async(req, res) => {
     res.send(users);
 }
 
+const getOneStudent = async(req, res) => {
+    let user_id = req.user_info.id;
+
+    let users = await Student.findOne({
+        where: {user_id},
+        include: [
+            {
+                model: userProfile,
+                attributes: ['file_path', 'file_name', 'file_rand_name'],
+                as: "student_profile"
+            }
+        ]
+    });
+
+    res.send(users);
+}
+
 const createStudent = async (req, res) => {
     req.body.user_id = req.query.id;
     await Student.create({ ...req.body})
@@ -75,4 +92,4 @@ const deleteStudent = async(req, res) => {
     
 }
 
-module.exports = { getStudents, createStudent, updateStudent, deleteStudent};
+module.exports = { getStudents, createStudent, updateStudent, deleteStudent, getOneStudent};
