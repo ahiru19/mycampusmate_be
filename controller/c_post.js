@@ -16,7 +16,7 @@ const createPost = async (req,res) => {
 
                 let result = await getFileInfo(files.file, 'posts');
                 let post = {...body, ...result}
-
+                post.post_id = post.id;
                 await studentFiles.create(post);
                 await files.file.mv(`./public/posts/${result.file_rand_name}`);
                 
@@ -25,6 +25,7 @@ const createPost = async (req,res) => {
                 for(let x in files){
                     let result = await getFileInfo(files[x].file, 'posts');
                     let post = {...body, ...result}
+                    post.post_id = post.id;
                     await studentFiles.create(post);
                     await files[x].file.mv(`./public/posts/${result.file_rand_name}`);
                 }
