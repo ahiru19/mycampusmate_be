@@ -34,13 +34,14 @@ const studentPost = sequelize.define("student_post", {
 Student.hasMany(studentPost, {
     foreignKey: "student_id",
     sourceKey: "id",
-    as: "student_post",
+    as: "posts",
     onDelete: "CASCADE"
 });
 
 studentPost.belongsTo(Student, {
     foreignKey: "student_id",
-    targetKey: "id"
+    targetKey: "id",
+    as: "student_post"
 });
 
 module.exports = {studentPost}

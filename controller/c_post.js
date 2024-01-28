@@ -49,6 +49,11 @@ const getPost = async (req,res) => {
                 model: Student,
                 attributes: ['first_name', 'last_name', 'middle_name','age','address','student_num'],
                 as: 'student_post'
+            },
+            {
+                model: studentFiles,
+                as: 'post_files',
+                attributes:['file_path', 'file_name','file_rand_name']
             }
         ]
     });
