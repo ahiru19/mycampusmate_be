@@ -97,7 +97,7 @@ const getStudents = async(req, res) => {
         include:[
           {
             model: Student,
-            attributes: ['first_name', 'last_name', 'middle_name','age','address','student_num'],
+            attributes: ['id','first_name', 'last_name', 'middle_name','age','address','student_num'],
             include: [
               {
                 model: userProfile,
