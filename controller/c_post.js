@@ -18,14 +18,14 @@ const createPost = async (req,res) => {
                 let post = {...body, ...result}
 
                 console.log(body)
-                    await files.file.mv(`./public/posts/${body.file_rand_name}`);
+                    await files.file.mv(`./public/posts/${result.file_rand_name}`);
                     
             }
             else{
                 for(let x in files){
                     let result = await getFileInfo(files[x].file, 'posts');
 
-                    await files[x].file.mv(`./public/posts/${body.file_rand_name}`);
+                    await files[x].file.mv(`./public/posts/${result.file_rand_name}`);
                 }
             }
         }
