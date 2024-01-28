@@ -98,6 +98,13 @@ const getStudents = async(req, res) => {
           {
             model: Student,
             attributes: ['first_name', 'last_name', 'middle_name','age','address','student_num'],
+            include: [
+              {
+                model: userProfile,
+                attributes: ['file_path', 'file_name', 'file_rand_name'],
+                as: "student_profile"
+              }
+            ],
             as: "student"
         },
         ]
