@@ -24,6 +24,10 @@ const studentFiles = sequelize.define("student_files", {
     file_name:{
         type: DataTypes.STRING,
         allowNull: false,
+    },
+    file_rand_name:{
+        type: DataTypes.STRING,
+        allowNull: false,
     }
     
 }, { freezeTableName: true, timestamps: true });
