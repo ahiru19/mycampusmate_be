@@ -7,6 +7,11 @@ module.exports.routePost = [
         action: post.getPost
     },
     {
+        path: "/post/getOne/",
+        method: "get",
+        action: post.getOnePost
+    },
+    {
         path: "/post/create",
         method: "post",
         action: post.createPost

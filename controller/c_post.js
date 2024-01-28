@@ -81,6 +81,29 @@ const getPost = async (req,res) => {
     res.send(posts)
 }
 
+const getOnePost = async (req,res) => {
+        let users = await Student.findOne({
+            where: {id: req.query.id},
+            include: [
+                {
+                    model: studentPost,
+                    as: "poststudent",
+                    order:[ ['createdAt', 'DESC']],
+                    include: [
+                        {
+                            model: studentFiles,
+                            attributes: ['file_path', 'file_name', 'file_rand_name'],
+                            as: "post_files"
+                        }
+                    ]
+                }
+            ]
+        });
+    
+        res.send(users);
+
+}
+
 const deletePost = async (req,res) => {
     let post_id = req.query.id
 
@@ -104,4 +127,4 @@ const deletePost = async (req,res) => {
     res.send('Deleted Successfuly');
 }
 
-module.exports = {createPost, getPost, deletePost}
+module.exports = {createPost, getPost, deletePost, getOnePost}
