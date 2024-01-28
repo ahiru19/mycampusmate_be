@@ -73,7 +73,7 @@ const Student = sequelize.define("student", {
 
     friends: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         get() {
             return this.getDataValue('friends').split(',')
         },
