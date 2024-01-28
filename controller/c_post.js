@@ -37,6 +37,25 @@ const createPost = async (req,res) => {
     
 } 
 
+const getPost = async (req,res) => {
+    // let user_id = req.user_info.id;
+    // if(req.user_info.usertype == 1){
+    let posts =  await studentPost.findAll();
+
+    //     res.send(studentPost);
+    // }
+    // else if(req.user_info.usertype == 2){
+
+    //     let student = studentPost.findOne({where: {user_id}, attribute: ['friends']});
+    //     let friends = student.friends;
+    //     await studentPost.findAll({
+    //         where: {user_id, }, 
+            
+    //     })
+    // }
+
+    res.send(posts)
+}
 
 
-module.exports = {createPost}
+module.exports = {createPost, getPost}
