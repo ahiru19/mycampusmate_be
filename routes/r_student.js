@@ -8,7 +8,7 @@ module.exports.routeStudent= [
     },
     {
         path: "/student/getOneStudent/",
-        method: "put",
+        method: "get",
         action: student.getOneStudent
     },
     {
