@@ -42,14 +42,13 @@ const createPost = async (req,res) => {
 } 
 
 const getPost = async (req,res) => {
-    // let user_id = req.user_info.id;
-    // if(req.user_info.usertype == 1){
     let posts =  await studentPost.findAll({
         include:[
             {
                 model: Student,
                 attributes: ['first_name', 'last_name', 'middle_name','age','address','student_num'],
                 as: 'studentpost',
+                order: ['createdAt', 'DESC'],
                 include: [
                     {
                         model: userProfile,
@@ -58,7 +57,7 @@ const getPost = async (req,res) => {
                     }
                 ]
             },
-            {
+            {   
                 model: studentFiles,
                 as: 'post_files',
                 attributes:['file_path', 'file_name','file_rand_name']
