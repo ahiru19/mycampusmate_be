@@ -16,7 +16,11 @@ module.exports.routeStudent= [
         method: "put",
         action: student.updateStudent
     },
+    {
+        path: "/student/addFriend/",
+        method: "put",
+        action: student.addFriend
+    },
     
-
     
 ]

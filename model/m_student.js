@@ -74,6 +74,7 @@ const Student = sequelize.define("student", {
     friends: {
         type: DataTypes.JSON,
         allowNull: true,
+        defaultValue:[]
     },
 
     // program: {
