@@ -43,12 +43,12 @@ const createPost = async (req,res) => {
 
 const getPost = async (req,res) => {
     let posts =  await studentPost.findAll({
+        order: ['createdAt', 'DESC'],
         include:[
             {
                 model: Student,
                 attributes: ['first_name', 'last_name', 'middle_name','age','address','student_num'],
                 as: 'studentpost',
-                order: ['createdAt', 'DESC'],
                 include: [
                     {
                         model: userProfile,
