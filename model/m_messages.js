@@ -1,9 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/dbconfig");
 const {Student} = require("./m_student");
-const {Admin} = require('./m_admin')
 
-const userProfile = sequelize.define("user_profile", {
+const Messages = sequelize.define("messages", {
 
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -13,56 +12,46 @@ const userProfile = sequelize.define("user_profile", {
         autoIncrement: true,
     },
 
-    student_id: {
+    from: {
         type: DataTypes.INTEGER.UNSIGNED,
         unique: true,
-        allowNull: true,
+        allowNull: false,
     },
-    admin_id: {
+    to: {
         type: DataTypes.INTEGER.UNSIGNED,
         unique: true,
-        allowNull: true,
+        allowNull: false,
     },
-
-    file_path: {
+    message: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    file_name:{
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    file_rand_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    }
     
 }, { freezeTableName: true, timestamps: true });
 
 // relation
-Student.hasOne(userProfile, {
-    foreignKey: "student_profile",
+Student.hasOne(Messages, {
+    foreignKey: "from",
     sourceKey: "id",
-    as: "student_profile",
+    as: "from",
     onDelete: "CASCADE"
 });
 
-userProfile.belongsTo(Student, {
-    foreignKey: "student_profile",
+Messages.belongsTo(Student, {
+    foreignKey: "from",
     targetKey: "id"
 });
 
-// relation
-Admin.hasOne(userProfile, {
-    foreignKey: "admin_id",
+Student.hasOne(Messages, {
+    foreignKey: "to",
     sourceKey: "id",
-    as: "admin_profile",
+    as: "to",
     onDelete: "CASCADE"
 });
 
-userProfile.belongsTo(Admin, {
-    foreignKey: "admin_id",
+Messages.belongsTo(Student, {
+    foreignKey: "to",
     targetKey: "id"
 });
 
-module.exports = {userProfile}
+module.exports = {Messages}
