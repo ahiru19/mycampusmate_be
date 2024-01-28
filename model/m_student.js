@@ -72,14 +72,8 @@ const Student = sequelize.define("student", {
     },
 
     friends: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
         allowNull: true,
-        get() {
-            return this.getDataValue('friends').split(',')
-        },
-        set(val){
-            this.setDataValue('friends',val.join(','));
-        }
     },
 
     // program: {
@@ -113,7 +107,7 @@ User.hasOne(Student, {
     onDelete: "CASCADE"
 });
 
-Student.belongsTo(User, {
+Student.belongsTo(User, { 
     foreignKey: "user_id",
     targetKey: "id",
     as:"user_student"
