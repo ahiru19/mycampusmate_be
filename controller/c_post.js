@@ -48,7 +48,7 @@ const getPost = async (req,res) => {
             {
                 model: Student,
                 attributes: ['first_name', 'last_name', 'middle_name','age','address','student_num'],
-                as: 'student_post'
+                as: 'studentpost'
             },
             {
                 model: studentFiles,
