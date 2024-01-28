@@ -41,14 +41,14 @@ const userProfile = sequelize.define("user_profile", {
 
 // relation
 Student.hasOne(userProfile, {
-    foreignKey: "student_profile",
+    foreignKey: "student_id",
     sourceKey: "id",
     as: "student_profile",
     onDelete: "CASCADE"
 });
 
 userProfile.belongsTo(Student, {
-    foreignKey: "student_profile",
+    foreignKey: "student_id",
     targetKey: "id"
 });
 
