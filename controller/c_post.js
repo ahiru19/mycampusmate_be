@@ -1,7 +1,8 @@
 const {studentFiles} = require("../model/m_files");
 const {studentPost} = require("../model/m_post")
 const {getFileInfo} = require("../helper/helper");
-const {Student} = require("../model/m_student")
+const {Student} = require("../model/m_student");
+const {userProfile} = require("../model/m_user_profile")
 
 const createPost = async (req,res) => {
 
@@ -48,7 +49,14 @@ const getPost = async (req,res) => {
             {
                 model: Student,
                 attributes: ['first_name', 'last_name', 'middle_name','age','address','student_num'],
-                as: 'studentpost'
+                as: 'studentpost',
+                include: [
+                    {
+                        model: userProfile,
+                        attributes: ['file_path', 'file_name', 'file_rand_name'],
+                        as: "student_profile"
+                    }
+                ]
             },
             {
                 model: studentFiles,
