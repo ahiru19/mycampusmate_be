@@ -11,5 +11,9 @@ module.exports.routePost = [
         method: "post",
         action: post.createPost
     },
-    
+    {
+        path: "/post/delete",
+        method: "put",
+        action: post.deletePost
+    },
 ]

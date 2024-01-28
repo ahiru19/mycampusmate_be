@@ -3,7 +3,8 @@ const {studentPost} = require("../model/m_post")
 const {getFileInfo} = require("../helper/helper");
 const {Student} = require("../model/m_student");
 const {userProfile} = require("../model/m_user_profile")
-
+const path = require("path");
+var fs = require('fs');
 const createPost = async (req,res) => {
 
     let body = req.body;
@@ -80,5 +81,27 @@ const getPost = async (req,res) => {
     res.send(posts)
 }
 
+const deletePost = async (req,res) => {
+    let post_id = req.query.id
 
-module.exports = {createPost, getPost}
+    let post = await studentPost.findOne({where:{id:post_id}});
+
+    let file_post = await studentFiles.findOne({ where: {post_id}});
+    if(file_post){
+        let file_path = file_post.file_path + file_post.file_rand_name;
+        
+        fs.unlink(`.${file_path}`, (err) => {
+            if(err){
+                console.log(err);
+                res.status(500).send('Something went wrong')
+                return 0;
+            };
+          });
+         await file_post.destroy();
+    }
+     await post.destroy();
+    
+    res.send('Deleted Successfuly');
+}
+
+module.exports = {createPost, getPost, deletePost}
