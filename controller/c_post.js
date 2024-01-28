@@ -86,6 +86,11 @@ const getOnePost = async (req,res) => {
             where: {id: req.query.id},
             include: [
                 {
+                    model: userProfile,
+                    attributes: ['file_path', 'file_name', 'file_rand_name'],
+                    as: "student_profile"
+                },
+                {
                     model: studentPost,
                     as: "poststudent",
                     order:[ ['createdAt', 'DESC']],
