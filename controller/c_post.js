@@ -1,6 +1,7 @@
 const {studentFiles} = require("../model/m_files");
 const {studentPost} = require("../model/m_post")
 const {getFileInfo} = require("../helper/helper");
+const {Student} = require("../model/m_student")
 
 const createPost = async (req,res) => {
 
@@ -42,7 +43,15 @@ const createPost = async (req,res) => {
 const getPost = async (req,res) => {
     // let user_id = req.user_info.id;
     // if(req.user_info.usertype == 1){
-    let posts =  await studentPost.findAll();
+    let posts =  await studentPost.findAll({
+        include:[
+            {
+                model: Student,
+                attributes: ['first_name', 'last_name', 'middle_name','age','address','student_num'],
+                as: 'student_post'
+            }
+        ]
+    });
 
     //     res.send(studentPost);
     // }
