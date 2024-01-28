@@ -22,6 +22,7 @@ app.use(fileupload({ //this is to use the file and give size of the file
 }));
 
 app.use("/public/profile", express.static(path.join(__dirname, '/public/profile/')));
+app.use("/public/posts", express.static(path.join(__dirname, '/public/posts/')));
 
 //register all routes
 appRoutes.forEach((item) => {
