@@ -98,7 +98,8 @@ const getOnePost = async (req,res) => {
                         {
                             model: studentFiles,
                             attributes: ['file_path', 'file_name', 'file_rand_name'],
-                            as: "post_files"
+                            as: "post_files",
+                            order:[['createdAt', 'DESC']],
                         }
                     ]
                 }
