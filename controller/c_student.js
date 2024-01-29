@@ -94,19 +94,20 @@ const deleteStudent = async(req, res) => {
 
 
 const addFriend = async(req, res) => {
-    let user = await Student.findOne({where:{user_id:1}});
+    let user_id = req.user_info.id;
+    let user = await Student.findOne({where:{user_id}});
 
     let new_arr = JSON.parse(user.friends);
 
     if(new_arr){
-        if(new_arr.includes(req.body.friends)){
+        if(new_arr.includes(req.query.id)){
             res.status(500).send("Student is already in your friend's list");
             return 0;
         }
-        new_arr.push(req.body.friends);
+        new_arr.push(req.query.id);
     }
     else {
-        new_arr = [req.body.friends]
+        new_arr = [req.query.id]
     }
     
     user.friends = new_arr
