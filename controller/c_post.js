@@ -93,7 +93,7 @@ const getOnePost = async (req,res) => {
                 {
                     model: studentPost,
                     as: "poststudent",
-                    order:[ ['createdAt', 'DESC']],
+                    order:[['createdAt', 'DESC']],
                     include: [
                         {
                             model: studentFiles,
