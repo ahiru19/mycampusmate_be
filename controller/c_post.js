@@ -2,10 +2,22 @@ const {studentFiles} = require("../model/m_files");
 const {studentPost} = require("../model/m_post")
 const {getFileInfo} = require("../helper/helper");
 const {Student} = require("../model/m_student");
+const {Admin} = require("../model/m_admin")
 const {userProfile} = require("../model/m_user_profile")
 const path = require("path");
 var fs = require('fs');
 const createPost = async (req,res) => {
+    let user_id = req.user_info.id;
+    let usertype = req.user_info.usertype;
+    
+    if(usertype == 1){
+        let user = await Admin.findOne({where:{user_id}});
+        body.admin_id = user.id;
+    }
+    else {
+        let user = await Student.findOne({where:{user_id}});
+        body.student_id = user.id;
+    }
 
     let body = req.body;
     body.visibility = parseInt(body.visibility);
@@ -43,6 +55,8 @@ const createPost = async (req,res) => {
 } 
 
 const getPost = async (req,res) => {
+      
+
     let posts =  await studentPost.findAll({
         order: [['createdAt', 'DESC']],
         include:[
