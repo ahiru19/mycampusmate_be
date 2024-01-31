@@ -7,6 +7,7 @@ const {userProfile} = require("../model/m_user_profile")
 const path = require("path");
 var fs = require('fs');
 const createPost = async (req,res) => {
+    let body = req.body;
     let user_id = req.user_info.id;
     let usertype = req.user_info.usertype;
     
@@ -19,7 +20,7 @@ const createPost = async (req,res) => {
         body.student_id = user.id;
     }
 
-    let body = req.body;
+
     body.visibility = parseInt(body.visibility);
     
     await studentPost.create({...body})
