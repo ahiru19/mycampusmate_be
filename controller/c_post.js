@@ -73,6 +73,17 @@ const getPost = async (req,res) => {
                     }
                 ]
             },
+            {
+                model: Admin,
+                as: 'adminpost',
+                include: [
+                    {
+                        model: userProfile,
+                        attributes: ['file_path', 'file_name', 'file_rand_name'],
+                        as: "admin_profile"
+                    }
+                ]
+            },
             {   
                 model: studentFiles,
                 as: 'post_files',
