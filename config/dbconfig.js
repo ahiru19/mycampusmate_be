@@ -9,11 +9,11 @@ const sequelize = new Sequelize(
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
         dialect: "mysql",
-        dialectOptions:{
-            ssl : {
-                ca: fs.readFileSync('./config/cacert.pem'),
-            }
-        },
+        // dialectOptions:{
+        //     ssl : {
+        //         ca: fs.readFileSync('./config/cacert.pem'),
+        //     }
+        // },
         pool: {
             max: 5,
             min: 0,
