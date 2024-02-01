@@ -191,10 +191,7 @@ const getOneUser = async(req, res) => {
         let user_acc = await User.findOne({ where: {id:id}});
         user.email = user_acc.email
         user.username = user_acc.username
-
-        if(user.student_profile){
-          user.student_profile.file_path = user.student_profile.file_path + '/' + user.student_profile.file_rand_name;
-        }
+        
         res.status(200).send(user)
     })
     .catch( (err) => {
