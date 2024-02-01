@@ -161,11 +161,6 @@ const getOneUser = async(req, res) => {
     ]
   })
     .then( async (user)=>{
-      let id = user.user_id
-
-      if(user.admin_profile){
-        user.admin_profile.file_path = user.admin_profile.file_path + '/' + user.admin_profile.file_rand_name;
-      }
         res.status(200).send(user)
     })
     .catch( (err) => {
