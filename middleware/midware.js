@@ -26,6 +26,7 @@ const AuthToken = async (req, res, next) => {
             .catch( async(err) => {
                 console.log(err)
                 res.status(400).send('Token not found!')
+                return 0;
             })
           
         }
