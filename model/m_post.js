@@ -3,7 +3,7 @@ const sequelize = require("../config/dbconfig");
 const {Student} = require("./m_student");
 const {Admin} = require("./m_admin")
 
-const studentPost = sequelize.define("student_post", {
+const studentPost = sequelize.define("posts", {
 
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -33,7 +33,13 @@ const studentPost = sequelize.define("student_post", {
         //2 for friends only
         //3 for only me
         allowNull: false,
-    }
+    },
+    likes: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        defaultValue:[]
+    },
+    
 }, { freezeTableName: true, timestamps: true });
 
 // relation

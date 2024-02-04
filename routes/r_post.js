@@ -21,4 +21,9 @@ module.exports.routePost = [
         method: "put",
         action: post.deletePost
     },
+    {
+        path: "/post/likePost",
+        method: "put",
+        action: post.addLike
+    },
 ]

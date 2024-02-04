@@ -1,11 +1,13 @@
 const {studentFiles} = require("../model/m_files");
-const {studentPost} = require("../model/m_post")
+const {studentPost} = require("../model/m_post");
+const {Comments} = require("../model/m_comments");
 const {getFileInfo} = require("../helper/helper");
 const {Student} = require("../model/m_student");
 const {Admin} = require("../model/m_admin")
 const {userProfile} = require("../model/m_user_profile")
 const path = require("path");
 var fs = require('fs');
+
 const createPost = async (req,res) => {
     let body = req.body;
     let user_id = req.user_info.id;
@@ -31,9 +33,8 @@ const createPost = async (req,res) => {
             if(typeof files == 'object'){
 
                 let result = await getFileInfo(files.file, 'posts');
-                let post = {...body, ...result}
-                post.post_id = student_post.id;
-                await studentFiles.create(post);
+                result.post_id = student_post.id;
+                await studentFiles.create(result);
                 await files.file.mv(`./public/posts/${result.file_rand_name}`);
                 
             }
@@ -88,6 +89,25 @@ const getPost = async (req,res) => {
                 model: studentFiles,
                 as: 'post_files',
                 attributes:['file_path', 'file_name','file_rand_name']
+            },
+            {
+                model: Comments,
+                as: 'comments_to_post',
+                attributes:['comments'],
+                include: [
+                    {
+                        model: Student,
+                        attributes: ['first_name', 'last_name', 'middle_name'],
+                        as: 'studentcomments',
+                        include: [
+                            {
+                                model: userProfile,
+                                attributes: ['file_path', 'file_name', 'file_rand_name'],
+                                as: "student_profile"
+                            }
+                        ]
+                    },
+                ]
             }
         ]
     });
@@ -161,4 +181,42 @@ const deletePost = async (req,res) => {
     res.send('Deleted Successfuly');
 }
 
-module.exports = {createPost, getPost, deletePost, getOnePost}
+const addLike = async (req, res) => {
+    try{
+       
+        const post = await studentPost.findOne({where: {id:req.query.id}})
+        
+        let new_arr = JSON.parse(post.likes);
+        // console.log(new_arr);
+
+        if(new_arr.length > 0){
+            
+            if(new_arr.includes(req.user_info.id)){
+
+                user_index = new_arr.indexOf(req.user_info.id);
+
+                if(user_index > -1){
+                    new_arr.splice(user_index, 1);
+                    console.log(new_arr)
+                }
+               
+            }else {
+                new_arr.push(req.user_info.id);
+            }
+        }
+        else {
+            new_arr = [req.user_info.id]
+        }
+        
+        
+        post.likes = new_arr
+        post.save();
+        res.send('Success');
+    }
+    catch(err) {
+        res.status(500).send(err);
+    }
+}
+
+
+module.exports = {createPost, getPost, deletePost, getOnePost, addLike}
