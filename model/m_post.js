@@ -37,9 +37,13 @@ const studentPost = sequelize.define("posts", {
     likes: {
         type: DataTypes.JSON,
         allowNull: true,
-        defaultValue:[]
+        defaultValue:[],
+        get() {
+            const rawValue = JSON.parse(this.getDataValue('likes'));
+            return rawValue.length;
+        }
     },
-    
+
 }, { freezeTableName: true, timestamps: true });
 
 // relation

@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/dbconfig");
 const {studentPost} = require("./m_post");
 
-const studentFiles = sequelize.define("student_files", {
+const studentFiles = sequelize.define("files", {
 
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -33,7 +33,7 @@ const studentFiles = sequelize.define("student_files", {
 }, { freezeTableName: true, timestamps: true });
 
 // relation
-studentPost.hasOne(studentFiles, {
+studentPost.hasMany(studentFiles, {
     foreignKey: "post_id",
     sourceKey: "id",
     as: "post_files",
