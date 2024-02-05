@@ -119,4 +119,4 @@ const addFriend = async(req, res) => {
 
     res.send(user);
 }
-module.exports = { addComments, createStudent, updateStudent, deleteStudent, getOneStudent, addFriend};
+module.exports = { addComments, createStudent, updateStudent, deleteStudent, addFriend};
