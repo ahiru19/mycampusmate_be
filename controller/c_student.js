@@ -1,5 +1,6 @@
 const {Student} = require("../model/m_student");
 const {userProfile} = require("../model/m_user_profile");
+const {User} = require("../model/m_user");
 const {getFileInfo, calculateAge, checkIfUserExist} = require("../helper/helper")
 const path = require("path");
 
@@ -21,7 +22,14 @@ const getOneStudent = async(req, res) => {
                 model: userProfile,
                 attributes: ['file_path', 'file_name', 'file_rand_name'],
                 as: "student_profile"
+            },
+            {
+                model: User,
+                attributes: ['id'],
+                as: "user_student"
             }
+
+            
         ]
     });
 
@@ -92,6 +100,9 @@ const deleteStudent = async(req, res) => {
     
 }
 
+const friendRequest = async(req, res) => {
+    
+}
 
 const addFriend = async(req, res) => {
     let user_id = req.user_info.id;
