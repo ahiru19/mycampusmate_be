@@ -25,7 +25,7 @@ const Comments = sequelize.define("comments", {
     },
     
     post_id: {
-        type: DataTypes.TEXT('long'),
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
     },
     comments: {
