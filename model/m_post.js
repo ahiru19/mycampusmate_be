@@ -35,7 +35,7 @@ const studentPost = sequelize.define("posts", {
         allowNull: false,
     },
     likes: {
-        type: DataTypes.JSON,
+        type: DataTypes.TEXT('long'),
         allowNull: true,
         defaultValue:[],
         get() {

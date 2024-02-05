@@ -3,7 +3,8 @@ const {studentPost} = require("../model/m_post");
 const {Comments} = require("../model/m_comments");
 const {getFileInfo} = require("../helper/helper");
 const {Student} = require("../model/m_student");
-const {Admin} = require("../model/m_admin")
+const {Admin} = require("../model/m_admin");
+// const { Sequelize } = require("sequelize");
 const {userProfile} = require("../model/m_user_profile")
 const path = require("path");
 var fs = require('fs');
@@ -34,6 +35,7 @@ const createPost = async (req,res) => {
 
                 let result = await getFileInfo(files.file, 'posts');
                 result.post_id = student_post.id;
+                // console.log(result);
                 await studentFiles.create(result);
                 await files.file.mv(`./public/posts/${result.file_rand_name}`);
                 
@@ -61,6 +63,9 @@ const getPost = async (req,res) => {
 
     let posts =  await studentPost.findAll({
         order: [['createdAt', 'DESC']],
+        // attributes:{
+        //     include:[[Sequelize.fn("COUNT", Sequelize.col("JSON_LENGTH('likes')")), "like_count"]]
+        // },
         include:[
             {
                 model: Student,
@@ -190,7 +195,7 @@ const addLike = async (req, res) => {
         // console.log(new_arr);
 
         if(new_arr.length > 0){
-            
+           
             if(new_arr.includes(req.user_info.id)){
 
                 user_index = new_arr.indexOf(req.user_info.id);
@@ -205,15 +210,17 @@ const addLike = async (req, res) => {
             }
         }
         else {
+            
             new_arr = [req.user_info.id]
         }
         
-        
-        post.likes = new_arr
+        new_arr = JSON.stringify(new_arr);
+        post.likes = new_arr;
         post.save();
         res.send('Success');
     }
     catch(err) {
+        console.log(err)
         res.status(500).send(err);
     }
 }
