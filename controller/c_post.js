@@ -194,7 +194,7 @@ const addLike = async (req, res) => {
         let new_arr = JSON.parse(post.likes);
         // console.log(new_arr);
 
-        if(new_arr.length > 0){
+        if(new_arr && new_arr.length > 0){
            
             if(new_arr.includes(req.user_info.id)){
 
