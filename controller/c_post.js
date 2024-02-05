@@ -114,6 +114,7 @@ const getPost = async (req,res) => {
                     },
                     {
                         model: Admin,
+                        attributes: ['first_name', 'last_name', 'middle_name'],
                         as: 'admincomments',
                         include: [
                             {
