@@ -155,7 +155,12 @@ const getOnePost = async (req,res) => {
                            
                         }
                     ]
-                }
+                },
+                {
+                    model: Comments,
+                    attributes: ['comments'],
+                    as: "post_to_comments"
+                },
             ]
         });
     
