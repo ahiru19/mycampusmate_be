@@ -30,7 +30,7 @@ const Comments = sequelize.define("comments", {
     },
     comments: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
     },
     // likes: {
     //     type: DataTypes.JSON,
