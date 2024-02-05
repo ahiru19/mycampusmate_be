@@ -2,7 +2,7 @@ const comments = require("../controller/c_comments");
 
 module.exports.routeComments = [
     {
-        path: "/comment/addComment/",
+        path: "/comments/addComment/",
         method: "post",
         action: comments.addComments
     },
