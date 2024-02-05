@@ -37,18 +37,18 @@ const studentPost = sequelize.define("posts", {
     likes: {
         type: DataTypes.TEXT('long'),
         allowNull: true,
-        defaultValue:[],
-        get() {
-            console.log(typeof this.getDataValue('likes'))
-            if(this.getDataValue('likes') != "[]" || this.getDataValue('likes') != ""){
-                const rawValue = JSON.parse(this.getDataValue('likes'));
-                return rawValue.length;
-            }
-            else{
-                return this.getDataValue('likes');
-            }
+        defaultValue:"[]",
+        // get() {
+
+        //     if(this.getDataValue('likes') != "[]" || this.getDataValue('likes') != ""){
+        //         const rawValue = JSON.parse(this.getDataValue('likes'));
+        //         return rawValue.length;
+        //     }
+        //     else{
+        //         return this.getDataValue('likes');
+        //     }
             
-        }
+        // }
     },
 
 }, { freezeTableName: true, timestamps: true });
