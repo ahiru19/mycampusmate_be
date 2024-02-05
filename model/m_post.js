@@ -39,8 +39,15 @@ const studentPost = sequelize.define("posts", {
         allowNull: true,
         defaultValue:[],
         get() {
-            const rawValue = JSON.parse(this.getDataValue('likes'));
-            return rawValue.length;
+            console.log(typeof this.getDataValue('likes'))
+            if(this.getDataValue('likes') != "[]" || this.getDataValue('likes') != ""){
+                const rawValue = JSON.parse(this.getDataValue('likes'));
+                return rawValue.length;
+            }
+            else{
+                return this.getDataValue('likes');
+            }
+            
         }
     },
 
