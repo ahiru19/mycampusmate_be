@@ -1,14 +1,14 @@
+const {Comments} = require("../model/m_comments");
 const {Student} = require("../model/m_student");
 const {userProfile} = require("../model/m_user_profile");
 const {getFileInfo, calculateAge, checkIfUserExist} = require("../helper/helper")
 const path = require("path");
 
-const getStudents = async(req, res) => {
-    let users = await Student.findAll({
-        attributes:{exclude:['updatedAt']}
+const addComments = async(req, res) => {
+    await Comments.create(req.body)
+    .then( async() => {
+        res.status(200).send("Comment Saved Successfuly")
     });
-
-    res.send(users);
 }
 
 const getOneStudent = async(req, res) => {
@@ -118,4 +118,4 @@ const addFriend = async(req, res) => {
 
     res.send(user);
 }
-module.exports = { getStudents, createStudent, updateStudent, deleteStudent, getOneStudent, addFriend};
+module.exports = { addComments, createStudent, updateStudent, deleteStudent, getOneStudent, addFriend};
