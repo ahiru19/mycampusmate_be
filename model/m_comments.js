@@ -64,7 +64,7 @@ Admin.hasMany(Comments, {
 Comments.belongsTo(Admin, {
     foreignKey: "admin_id",
     targetKey: "id",
-    as: "admincomment"
+    as: "admincomments"
 });
 
 // relation
