@@ -1,6 +1,7 @@
 const {Comments} = require("../model/m_comments");
 const {Student} = require("../model/m_student");
 const {userProfile} = require("../model/m_user_profile");
+const {studentPost} = require("../model/m_post");
 const {getFileInfo, calculateAge, checkIfUserExist} = require("../helper/helper")
 const path = require("path");
 
@@ -11,16 +12,16 @@ const addComments = async(req, res) => {
     });
 }
 
-const getOneStudent = async(req, res) => {
-    let user_id = req.user_info.id;
+const getAllCommentsForPost = async(req, res) => {
+    let id = req.query.id;
 
-    let users = await Student.findOne({
-        where: {user_id},
+    let users = await studentPost.findOne({
+        where: id,
         include: [
             {
-                model: userProfile,
-                attributes: ['file_path', 'file_name', 'file_rand_name'],
-                as: "student_profile"
+                model: Comments,
+                attributes: ['comments'],
+                as: "comments_to_post"
             }
         ]
     });
@@ -75,11 +76,11 @@ const updateStudent = async(req, res) => {
 
 const deleteStudent = async(req, res) => {
     
-    await Student.destroy({where: {id: req.query.id}}).then( async(client) => {
+    await Comments.destroy({where: {id: req.query.id}}).then( async(client) => {
         if(client){
-            res.send('Student deleted successfully').status(200)
+            res.send('Comment deleted successfully').status(200)
         }else {
-            res.send('Student not found').status(400)
+            res.send('Comment not found').status(400)
             return 0;
         }
         
