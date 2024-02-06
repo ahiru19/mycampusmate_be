@@ -69,14 +69,14 @@ Comments.belongsTo(Admin, {
 
 // relation
 studentPost.hasMany(Comments, {
-    foreignKey: "admin_id",
+    foreignKey: "post_id",
     sourceKey: "id",
     as: "comments_to_post",
     onDelete: "CASCADE"
 });
 
 Comments.belongsTo(studentPost, {
-    foreignKey: "admin_id",
+    foreignKey: "post",
     targetKey: "id",
     as: "post_to_comments"
 });
