@@ -219,7 +219,7 @@ const getAllUsers = async(req, res) => {
       include:[
         {
           model: Student,
-          attributes: ['id','first_name', 'last_name', 'middle_name','age','address','student_num'],
+          attributes: ['id','first_name', 'last_name', 'middle_name'],
           include: [
             {
               model: userProfile,
@@ -231,7 +231,7 @@ const getAllUsers = async(req, res) => {
       },
       {
         model: Admin,
-        attributes: ['id','first_name', 'last_name', 'middle_name','age','address','student_num'],
+        attributes: ['id','first_name', 'last_name', 'middle_name'],
         include: [
           {
             model: userProfile,
