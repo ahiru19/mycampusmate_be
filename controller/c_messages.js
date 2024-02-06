@@ -10,8 +10,8 @@ const getMessages = async(req, res) => {
         group:"convo_id",
         where:{
             [Op.or]:[
-               {from:req.user_info.id},
-               {to:req.user_info.id}
+                {from:req.user_info.id},
+                {to:req.user_info.id}
         ]
         },
         // order:["createdAt","DESC"],
@@ -92,7 +92,11 @@ const getMessages = async(req, res) => {
 const getOneMessages = async (req, res) => {
 
     await Messages.findAll({ 
-        where:{ convo_id:req.query.convo_id },
+        where:{ 
+            [Op.or]:[
+                {[Op.and]: [{from:req.query.from}, {to:req.query.to}]},
+                {[Op.and]: [{to:req.query.from}, {from:req.query.to}]}
+     ]},
         include: [
             {
                 model: User,
