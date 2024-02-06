@@ -76,7 +76,7 @@ studentPost.hasMany(Comments, {
 });
 
 Comments.belongsTo(studentPost, {
-    foreignKey: "post",
+    foreignKey: "post_id",
     targetKey: "id",
     as: "post_to_comments"
 });
