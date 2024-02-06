@@ -7,6 +7,11 @@ module.exports.routeAdmin= [
         action: admin.createStudent
     },
     {
+        path: "/admin/getAllUser/",
+        method: "get",
+        action: admin.getAllUsers
+    },
+    {
         path: "/admin/getAllStudent/",
         method: "get",
         action: admin.getStudents
