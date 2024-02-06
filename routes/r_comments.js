@@ -6,11 +6,11 @@ module.exports.routeComments = [
         method: "post",
         action: comments.addComments
     },
-    // {
-    //     path: "/comments/getAll/",
-    //     method: "get",
-    //     action: comments.getClient
-    // },
+    {
+        path: "/comments/delete/",
+        method: "put",
+        action: comments.deleteComment
+    },
     // {
     //     path: "/comments/getAll/",
     //     method: "get",

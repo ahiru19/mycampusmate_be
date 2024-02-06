@@ -74,7 +74,7 @@ const updateStudent = async(req, res) => {
     res.status(200).send('Student updated successfully');
 }
 
-const deleteStudent = async(req, res) => {
+const deleteComment = async(req, res) => {
     
     await Comments.destroy({where: {id: req.query.id}}).then( async(client) => {
         if(client){
@@ -119,4 +119,4 @@ const addFriend = async(req, res) => {
 
     res.send(user);
 }
-module.exports = { addComments, createStudent, updateStudent, deleteStudent, addFriend};
+module.exports = { addComments, createStudent, updateStudent, deleteComment};
