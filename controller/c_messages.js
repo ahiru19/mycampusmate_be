@@ -15,7 +15,7 @@ const getMessages = async(req, res) => {
         ]
         },
         // order:["createdAt","DESC"],
-        group: 'convo_id',
+        group: ['convo_id'],
         include: [
             {
                 model: User,
