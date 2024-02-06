@@ -247,4 +247,37 @@ const getAllUsers = async(req, res) => {
   res.send(users);
 }
 
-module.exports = { createStudent, getStudents, approveStudent, rejectStudent, countStudents, updateAdmin, getOneStudent, getAllUsers};
+const getOneUser = async(req, res) => {
+  
+  await User.findOne({
+    where:{id:req.query.id},
+    include:[
+      {
+        model: Student,
+        attributes: ['id','first_name', 'last_name', 'middle_name'],
+        include: [
+          {
+            model: userProfile,
+            attributes: ['file_path', 'file_name', 'file_rand_name'],
+            as: "student_profile"
+          }
+        ],
+        as: "student"
+    },
+    {
+      model: Admin,
+      attributes: ['id','first_name', 'last_name', 'middle_name'],
+      include: [
+        {
+          model: userProfile,
+          attributes: ['file_path', 'file_name', 'file_rand_name'],
+          as: "admin_profile"
+        }
+      ],
+      as: "admin"
+  },
+    ]
+  })
+}
+
+module.exports = { createStudent, getStudents, approveStudent, rejectStudent, countStudents, updateAdmin, getOneStudent, getAllUsers, getOneUser};
