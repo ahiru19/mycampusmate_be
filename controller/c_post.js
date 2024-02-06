@@ -165,14 +165,15 @@ const getOnePost = async (req,res) => {
                             attributes: ['file_path', 'file_name', 'file_rand_name'],  
                             as: "post_files",
                            
-                        }
+                        },
+                        {
+                            model: Comments,
+                            attributes: ['id','comments'],
+                            as: "comments_to_post"
+                        },
                     ]
                 },
-                {
-                    model: Comments,
-                    attributes: ['id','comments'],
-                    as: "commentstudent"
-                },
+             
             ]
         });
     
