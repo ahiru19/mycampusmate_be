@@ -7,7 +7,7 @@ const {User} = require("../model/m_user");
 
 const getMessages = async(req, res) => {
     let messages = await Messages.findAll({
-        attributes:["id", "convo_id"],
+        group:"convo_id",
         where:{
             [Op.or]:[
                {from:req.user_info.id},
@@ -15,7 +15,6 @@ const getMessages = async(req, res) => {
         ]
         },
         // order:["createdAt","DESC"],
-        group: ['convo_id'],
         include: [
             {
                 model: User,
