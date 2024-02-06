@@ -169,7 +169,33 @@ const getOnePost = async (req,res) => {
                         {
                             model: Comments,
                             attributes: ['id','comments'],
-                            as: "comments_to_post"
+                            as: "comments_to_post",
+                            include: [
+                                {
+                                    model: Student,
+                                    attributes: ['id','first_name', 'last_name', 'middle_name'],
+                                    as: 'studentcomments',
+                                    include: [
+                                        {
+                                            model: userProfile,
+                                            attributes: ['file_path', 'file_name', 'file_rand_name'],
+                                            as: "student_profile"
+                                        }
+                                    ]
+                                },
+                                {
+                                    model: Admin,
+                                    attributes: ['id','first_name', 'last_name', 'middle_name'],
+                                    as: 'admincomments',
+                                    include: [
+                                        {
+                                            model: userProfile,
+                                            attributes: ['file_path', 'file_name', 'file_rand_name'],
+                                            as: "admin_profile"
+                                        }
+                                    ]
+                                },
+                            ]
                         },
                     ]
                 },
