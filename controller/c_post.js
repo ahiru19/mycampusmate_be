@@ -98,7 +98,7 @@ const getPost = async (req,res) => {
             {
                 model: Comments,
                 as: 'comments_to_post',
-                attributes:['comments'],
+                attributes:['id','comments'],
                 include: [
                     {
                         model: Student,
