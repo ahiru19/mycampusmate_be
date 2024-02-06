@@ -102,7 +102,7 @@ const getPost = async (req,res) => {
                 include: [
                     {
                         model: Student,
-                        attributes: ['first_name', 'last_name', 'middle_name'],
+                        attributes: ['id','first_name', 'last_name', 'middle_name'],
                         as: 'studentcomments',
                         include: [
                             {
@@ -114,7 +114,7 @@ const getPost = async (req,res) => {
                     },
                     {
                         model: Admin,
-                        attributes: ['first_name', 'last_name', 'middle_name'],
+                        attributes: ['id','first_name', 'last_name', 'middle_name'],
                         as: 'admincomments',
                         include: [
                             {
