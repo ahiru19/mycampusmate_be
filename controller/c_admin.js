@@ -278,6 +278,14 @@ const getOneUser = async(req, res) => {
   },
     ]
   })
+  .then( async (user) => {
+    res.send(user);
+  })
+  .catch ( async (err)=> {
+    console.log(err);
+    res.status(500).send(err);
+    return 0;
+  })
 }
 
 module.exports = { createStudent, getStudents, approveStudent, rejectStudent, countStudents, updateAdmin, getOneStudent, getAllUsers, getOneUser};
