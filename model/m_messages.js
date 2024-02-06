@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/dbconfig");
-const {Student} = require("./m_student");
+const {User} = require("./m_user");
 
 const Messages = sequelize.define("messages", {
 
@@ -12,14 +12,19 @@ const Messages = sequelize.define("messages", {
         autoIncrement: true,
     },
 
+    convo_id:{
+        type:DataTypes.STRING,
+        allowNull:false
+    },
+
     from: {
         type: DataTypes.INTEGER.UNSIGNED,
-        unique: true,
+        // unique: true,
         allowNull: false,
     },
     to: {
         type: DataTypes.INTEGER.UNSIGNED,
-        unique: true,
+        // unique: true,
         allowNull: false,
     },
     message: {
@@ -30,28 +35,30 @@ const Messages = sequelize.define("messages", {
 }, { freezeTableName: true, timestamps: true });
 
 // relation
-Student.hasOne(Messages, {
+User.hasMany(Messages, {
     foreignKey: "from",
     sourceKey: "id",
-    as: "from",
+    as: "user_to_message_from",
     onDelete: "CASCADE"
 });
 
-Messages.belongsTo(Student, {
+Messages.belongsTo(User, {
     foreignKey: "from",
-    targetKey: "id"
+    targetKey: "id",
+    as:"message_to_user_from"
 });
 
-Student.hasOne(Messages, {
+User.hasMany(Messages, {
     foreignKey: "to",
     sourceKey: "id",
-    as: "to",
+    as: "user_to_message_to",
     onDelete: "CASCADE"
 });
 
-Messages.belongsTo(Student, {
+Messages.belongsTo(User, {
     foreignKey: "to",
-    targetKey: "id"
+    targetKey: "id",
+    as: "message_to_user_to"
 });
 
 module.exports = {Messages}

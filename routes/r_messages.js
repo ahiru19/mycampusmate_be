@@ -6,6 +6,11 @@ module.exports.routeMessages = [
         method: "get",
         action: messages.getMessages
     },
+    {
+        path: "/messages/getOneMessages/",
+        method: "get",
+        action: messages.getOneMessages
+    },
 
     {
         path: "/messages/sendMessages/",
