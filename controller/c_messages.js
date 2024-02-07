@@ -4,6 +4,8 @@ const {userProfile} = require("../model/m_user_profile")
 const {Messages} = require("../model/m_messages");
 const { Op } = require("sequelize");
 const {User} = require("../model/m_user");
+const {groupChat} = require("../model/m_group_chat");
+const {groupMember} = require("../model/m_group_member");
 
 const getMessages = async(req, res) => {
     let messages = await Messages.findAll({
@@ -82,6 +84,11 @@ const getMessages = async(req, res) => {
                     
                 ]
             },
+            {
+                model: groupChat,
+                attributes: ['id','group_name'],
+                as: "message_group"
+            }
         ]
         
     })

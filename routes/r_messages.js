@@ -1,4 +1,5 @@
 const messages = require("../controller/c_messages");
+const group_chat = require("../controller/c_group_chat");
 
 module.exports.routeMessages = [
     {
@@ -22,5 +23,23 @@ module.exports.routeMessages = [
         path: "/messages/deleteMessages/",
         method: "put",
         action: messages.deleteMessages
+    },
+
+    {
+        path: "/messages/createGroup/",
+        method: "post",
+        action: group_chat.createGroupChat
+    },
+
+    {
+        path: "/messages/groupMessage/",
+        method: "post",
+        action: group_chat.addMessage
+    },
+
+    {
+        path: "/messages/groupMessage/",
+        method: "get",
+        action: group_chat.getMessages
     },
 ]
