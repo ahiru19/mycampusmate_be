@@ -1,4 +1,4 @@
-
+const {Student} = require("../model/m_student")
 const {userProfile} = require("../model/m_user_profile");
 const {User} = require("../model/m_user");
 const {getFileInfo, calculateAge, checkIfUserExist} = require("../helper/helper")
