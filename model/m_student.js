@@ -32,7 +32,7 @@ const Student = sequelize.define("student", {
 
     name_extension: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
 
     age: {
@@ -71,11 +71,17 @@ const Student = sequelize.define("student", {
         allowNull: true,
     },
 
-    friends: {
-        type: DataTypes.JSON,
-        allowNull: true,
-        defaultValue:[]
-    },
+    // friends: {
+    //     type: DataTypes.TEXT('medium'),
+    //     allowNull: true,
+    //     defaultValue:"[]",
+    // },
+
+    // friend_requests: {
+    //     type: DataTypes.TEXT('medium'),
+    //     allowNull: true,
+    //     defaultValue:"[]",
+    // }
 
     // program: {
     //     type: DataTypes.STRING,

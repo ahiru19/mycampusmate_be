@@ -1,4 +1,4 @@
-const {Student} = require("../model/m_student");
+
 const {userProfile} = require("../model/m_user_profile");
 const {User} = require("../model/m_user");
 const {getFileInfo, calculateAge, checkIfUserExist} = require("../helper/helper")
@@ -100,30 +100,5 @@ const deleteStudent = async(req, res) => {
     
 }
 
-const friendRequest = async(req, res) => {
-    
-}
 
-const addFriend = async(req, res) => {
-    let user_id = req.user_info.id;
-    let user = await Student.findOne({where:{user_id}});
-
-    let new_arr = JSON.parse(user.friends);
-
-    if(new_arr){
-        if(new_arr.includes(req.query.id)){
-            res.status(500).send("Student is already in your friend's list");
-            return 0;
-        }
-        new_arr.push(req.query.id);
-    }
-    else {
-        new_arr = [req.query.id]
-    }
-    
-    user.friends = new_arr
-    user.save();
-
-    res.send(user);
-}
-module.exports = { getStudents, createStudent, updateStudent, deleteStudent, getOneStudent, addFriend};
+module.exports = { getStudents, createStudent, updateStudent, deleteStudent, getOneStudent};

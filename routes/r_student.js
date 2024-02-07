@@ -1,4 +1,5 @@
 const student = require("../controller/c_student");
+const friends = require("../controller/c_friends")
 
 module.exports.routeStudent= [
     {
@@ -19,7 +20,22 @@ module.exports.routeStudent= [
     {
         path: "/student/addFriend/",
         method: "put",
-        action: student.addFriend
+        action: friends.sendFriendRequest
+    },
+    {
+        path: "/student/viewRequests/",
+        method: "get",
+        action: friends.getFriends
+    },
+    {
+        path: "/student/confirmRequest/",
+        method: "put",
+        action: friends.confirmFriendRequest
+    },
+    {
+        path: "/student/rejectRequest/",
+        method: "put",
+        action: friends.rejectFriendRequest
     },
     
     
