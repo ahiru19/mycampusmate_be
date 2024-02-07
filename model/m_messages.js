@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/dbconfig");
 const {User} = require("./m_user");
+const {groupChat} = require("./m_group_chat");
 
 const Messages = sequelize.define("messages", {
 
@@ -20,17 +21,28 @@ const Messages = sequelize.define("messages", {
     from: {
         type: DataTypes.INTEGER.UNSIGNED,
         // unique: true,
-        allowNull: false,
+        allowNull: true,
     },
     to: {
         type: DataTypes.INTEGER.UNSIGNED,
         // unique: true,
-        allowNull: false,
+        allowNull: true,
     },
     message: {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    for_gc: {
+        type: DataTypes.BOOLEAN,
+        // unique: true,
+        allowNull: false,
+        defaultValue: false
+    },
+    gc_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        // unique: true,
+        allowNull: true,
+    }
     
 }, { freezeTableName: true, timestamps: true });
 
@@ -59,6 +71,20 @@ Messages.belongsTo(User, {
     foreignKey: "to",
     targetKey: "id",
     as: "message_to_user_to"
+});
+
+// relation
+groupChat.hasMany(Messages, {
+    foreignKey: "gc_id",
+    sourceKey: "id",
+    as: "group_message",
+    onDelete: "CASCADE"
+});
+
+Messages.belongsTo(groupChat, {
+    foreignKey: "gc_id",
+    targetKey: "id",
+    as:"message_group"
 });
 
 module.exports = {Messages}
