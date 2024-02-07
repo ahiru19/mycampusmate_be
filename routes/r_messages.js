@@ -42,4 +42,9 @@ module.exports.routeMessages = [
         method: "get",
         action: group_chat.getMessages
     },
+    {
+        path: "/messages/groupChats/",
+        method: "get",
+        action: group_chat.getGroupChat
+    },
 ]

@@ -156,5 +156,26 @@ const getMessages = async(req,res) => {
     })
 }
 
+const getGroupChat = async(req, res) => {
+    await groupChat.findAll({
+        attributes: ['id', 'group_name'],
+        include: [
+            {
+                model:groupMember,
+                where: {user_id: req.user_info.id},
+                attributes: ['id']
+            }
+        ]
+    })
+    .then ( async(user) => {
+        res.send(user);
+    })
+    .catch ( async(err) => {
+        console.log(err);
+        res.status(500).send('Something went wrong')
+        return 0;
+    })
+}
 
-module.exports = {createGroupChat, addMember, addMessage, getMessages}
+
+module.exports = {createGroupChat, addMember, addMessage, getMessages, getGroupChat}
