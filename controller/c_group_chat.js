@@ -163,7 +163,8 @@ const getGroupChat = async(req, res) => {
             {
                 model:groupMember,
                 where: {user_id: req.user_info.id},
-                attributes: ['id']
+                attributes: ['id'],
+                as: "group_to_member"
             }
         ]
     })
