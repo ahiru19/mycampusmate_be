@@ -36,6 +36,11 @@ module.exports.routeMessages = [
         method: "post",
         action: group_chat.addMessage
     },
+    {
+        path: "/messages/addMember/",
+        method: "post",
+        action: group_chat.addMember
+    },
 
     {
         path: "/messages/groupMessage/",
