@@ -69,80 +69,82 @@ const addMessage = async(req, res) => {
 }
 
 const getMessages = async(req,res) => {
-    await Messages.findAll({
-        where: {gc_id: req.query.id},
-        attributes: ['id', 'from','createdAt'],
+    await groupChat.findAll({
+        where: {id: req.query.id},
+        exclude: ['createdAt'],
         include: [
-            { // para sa user to get the admin and student sa message_to
-                model: User,
-                attributes: ['email', 'username'],
-                as: "message_to_user_to",
-                include:[
-                    {
-                        model: Admin,
-                        attributes: ["id", "first_name","middle_name", "last_name"],
-                        as: 'admin',
-                        include: [
-                            {
-                                model: userProfile,
-                                attributes: ['file_path', 'file_name', 'file_rand_name'],
-                                as: "admin_profile"
-                            }
-                        ]
-                    },
-
-                    {
-                        model: Student,
-                        attributes: ["id", "first_name","middle_name", "last_name"],
-                        as: 'student',
-                        include: [
-                            {
-                                model: userProfile,
-                                attributes: ['file_path', 'file_name', 'file_rand_name'],
-                                as: "student_profile"
-                            }
-                        ]
-                    },
-                    
-                ]
-            },
-            { // para sa user to get the admin and student sa message_from
-                model: User,
-                attributes: ['email', 'username'],
-                as: "message_to_user_from",
-                include:[
-                    {
-                        model: Admin,
-                        attributes: ["id", "first_name","middle_name", "last_name"],
-                        as: 'admin',
-                        include: [
-                            {
-                                model: userProfile,
-                                attributes: ['file_path', 'file_name', 'file_rand_name'],
-                                as: "admin_profile"
-                            }
-                        ]
-                    },
-
-                    {
-                        model: Student,
-                        attributes: ["id", "first_name","middle_name", "last_name"],
-                        as: 'student',
-                        include: [
-                            {
-                                model: userProfile,
-                                attributes: ['file_path', 'file_name', 'file_rand_name'],
-                                as: "student_profile"
-                            }
-                        ]
-                    },
-                    
-                ]
-            },
             {
-                model: groupChat,
-                attributes: ['id','group_name'],
-                as: "message_group"
+                model: Messages,
+                attributes: ['id','message'],
+                as: "group_message",
+                include: [
+                    { // para sa user to get the admin and student sa message_to
+                        model: User,
+                        attributes: ['email', 'username'],
+                        as: "message_to_user_to",
+                        include:[
+                            {
+                                model: Admin,
+                                attributes: ["id", "first_name","middle_name", "last_name"],
+                                as: 'admin',
+                                include: [
+                                    {
+                                        model: userProfile,
+                                        attributes: ['file_path', 'file_name', 'file_rand_name'],
+                                        as: "admin_profile"
+                                    }
+                                ]
+                            },
+        
+                            {
+                                model: Student,
+                                attributes: ["id", "first_name","middle_name", "last_name"],
+                                as: 'student',
+                                include: [
+                                    {
+                                        model: userProfile,
+                                        attributes: ['file_path', 'file_name', 'file_rand_name'],
+                                        as: "student_profile"
+                                    }
+                                ]
+                            },
+                            
+                        ]
+                    },
+                    { // para sa user to get the admin and student sa message_from
+                        model: User,
+                        attributes: ['email', 'username'],
+                        as: "message_to_user_from",
+                        include:[
+                            {
+                                model: Admin,
+                                attributes: ["id", "first_name","middle_name", "last_name"],
+                                as: 'admin',
+                                include: [
+                                    {
+                                        model: userProfile,
+                                        attributes: ['file_path', 'file_name', 'file_rand_name'],
+                                        as: "admin_profile"
+                                    }
+                                ]
+                            },
+        
+                            {
+                                model: Student,
+                                attributes: ["id", "first_name","middle_name", "last_name"],
+                                as: 'student',
+                                include: [
+                                    {
+                                        model: userProfile,
+                                        attributes: ['file_path', 'file_name', 'file_rand_name'],
+                                        as: "student_profile"
+                                    }
+                                ]
+                            },
+                            
+                        ]
+                    },
+                ]
             }
         ]
     })
