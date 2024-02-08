@@ -13,74 +13,64 @@ const path = require("path");
 const register = async (req, res) => {
   let body = req.body;
 
-  body.age = await calculateAge(body.birth_date);
+  body.age = await calculateAge(body.birth_date);//Calculate the age of the student
   
   bcrypt.hash(body.password, 12).then( async (hash) => {
       body.password = hash;
 
-
       let if_exist = await User.findOne({where:{username:body.username}});
       
-      if(if_exist){
+      if(if_exist){ // check if exist
         res.status(400).send('Username is already taken!');
         return 0;
       }
+      else {
 
-      await User.create({ ...body })
-      .then( async (user) => {
-        
-        body.user_id = user.id;
+        let ext_name = ['.jpg','.jpeg','.png']
 
-        if(body.usertype == 1){
-          await Admin.create({ ...body})
-        }
-        else{
-          await Student.create({ ...body})
-          .then( async(student)=> {
-            if(req.files){
-              let body = req.body
+        let file_info = await getFileInfo(req.files.file, 'profile')
 
-              let ext_name = ['.jpg','.jpeg','.png']
+        if(ext_name.indexOf(path.extname(file_info.file_name).toLowerCase()) === -1 ){//check for the file extension
+            res.status(400).send('Only accept jpeg, jpg and/or png');
+            return 0;
+          }
 
-              let file_info = await getFileInfo(req.files.file, 'profile')
+          if(!req.files.file){
+            console.log('no files');
+            res.status(400).send('Kindly Upload an image');
+            return 0;
+          }
 
-              if(ext_name.indexOf(path.extname(file_info.file_name).toLowerCase()) === -1 ){
-                res.status(400).send('Only accept jpeg, jpg and/or png');
-                return 0;
+          await req.files.file.mv(`./public/profile/${file_info.file_rand_name}`)
+          .then( async()=> {
+            await User.create({ ...body }) //create the user
+            .then( async (user) => { 
+              body.user_id = user.id;
+
+              if(body.usertype == 1){//check if admin or student
+                await Admin.create({ ...body})
               }
 
-              file_info.student_id = student.id
+              else{
+                await Student.create({ ...body})
+              }
 
-              await userProfile.create({ ...file_info}) 
-              .then( async(user)=> {
-                  await req.files.file.mv(`./public/profile/${file_info.file_rand_name}`);
-              })
-              .catch( async (err) => {
-                    console.log(err)
-                    res.status(400).send({ error: err });
-              });
-            }
+              await userProfile.create({ ...file_info}) //save the user profile
+
+            })
+            res.send('Registered Successfuly')
 
           })
+          .catch( (err) => {
+            console.log(err);
+            res.status(500).send('Something went wrong');
+            return 0;
+          })
+      
         }
+  });
 
-        result = {
-          status: 200,
-          message:"User Registered Successfuly",
-        }
 
-        res.send(result);
-      })
-
-      .catch( async (err) => {
-        console.log(err)
-        if (err) {
-            res.status(400).send({ error: err });
-        }
-      });
-
-});
-  
 };
 
 const login = async (req, res) => {
