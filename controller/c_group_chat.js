@@ -75,7 +75,7 @@ const getMessages = async(req,res) => {
         include: [
             {
                 model: Messages,
-                attributes: ['id','message'],
+                attributes: ['id','message', 'createdAt'],
                 as: "group_message",
                 include: [
                     { // para sa user to get the admin and student sa message_to
