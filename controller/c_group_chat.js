@@ -43,6 +43,25 @@ const addMember = async(req, res) => {
     })
 }
 
+const removeMember = async(req, res) => {
+    try{
+        const check_user = await checkIfUserExist(groupMember, {group_id:req.query.gc_id, user_id: req.query.user_id});
+    if(!check_user){
+        res.status(500).send('User is not in the said group');
+        return 0;
+    }
+    else {
+        await check_user.destroy();
+        res.send('User removed from the group chat');
+    }
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send('Something went wrong');
+        return 0;
+    }
+}
+
 const addMessage = async(req, res) => {
     req.body.for_gc = 1;
     req.body.from = req.user_info.id;
@@ -239,4 +258,4 @@ const getMembers = async(req, res) => {
 }
 
 
-module.exports = {createGroupChat, addMember, addMessage, getMessages, getGroupChat, getMembers}
+module.exports = {createGroupChat, addMember, addMessage, getMessages, getGroupChat, getMembers, removeMember}

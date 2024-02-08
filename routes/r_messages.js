@@ -57,4 +57,9 @@ module.exports.routeMessages = [
         method: "get",
         action: group_chat.getMembers
     },
+    {
+        path: "/group/removeMember/",
+        method: "put",
+        action: group_chat.removeMember
+    },
 ]
