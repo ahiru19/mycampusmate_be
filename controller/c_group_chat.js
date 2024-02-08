@@ -30,6 +30,7 @@ const addMember = async(req, res) => {
     const check_user = await checkIfUserExist(groupMember, {group_id:req.body.group_id, user_id: req.body.user_id});
     if(check_user){
         res.status(500).send('User is already in the group');
+        return 0;
     }
     await groupMember.create(req.body)
     .then( async(group)=> {
