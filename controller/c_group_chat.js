@@ -180,5 +180,62 @@ const getGroupChat = async(req, res) => {
     })
 }
 
+const getMembers = async(req, res) => {
+    await groupChat.findAll({
+        where: {id: req.query.id},
+        attributes: ['id', 'group_name'],
+        include: [
+            {
+                model:groupMember,
+                attributes: ['id'],
+                as: "group_to_member",
+                include: [
+                    { // para sa user to get the admin and student sa message_to
+                        model: User,
+                        attributes: ['id','email'],
+                        as: "group_user",
+                        include:[
+                            {
+                                model: Admin,
+                                attributes: ["id", "first_name","middle_name", "last_name"],
+                                as: 'admin',
+                                include: [
+                                    {
+                                        model: userProfile,
+                                        attributes: ['file_path', 'file_name', 'file_rand_name'],
+                                        as: "admin_profile"
+                                    }
+                                ]
+                            },
+        
+                            {
+                                model: Student,
+                                attributes: ["id", "first_name","middle_name", "last_name"],
+                                as: 'student',
+                                include: [
+                                    {
+                                        model: userProfile,
+                                        attributes: ['file_path', 'file_name', 'file_rand_name'],
+                                        as: "student_profile"
+                                    }
+                                ]
+                            },
+                            
+                        ]
+                    },
+                ]
+            }
+        ]
+    })
+    .then ( async(user) => {
+        res.send(user);
+    })
+    .catch ( async(err) => {
+        console.log(err);
+        res.status(500).send('Something went wrong')
+        return 0;
+    })
+}
 
-module.exports = {createGroupChat, addMember, addMessage, getMessages, getGroupChat}
+
+module.exports = {createGroupChat, addMember, addMessage, getMessages, getGroupChat, getMembers}

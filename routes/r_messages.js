@@ -39,7 +39,7 @@ module.exports.routeMessages = [
     {
         path: "/messages/addMember/",
         method: "post",
-        action: group_chat.addMember
+        action: group_chat.addMember 
     },
 
     {
@@ -51,5 +51,10 @@ module.exports.routeMessages = [
         path: "/messages/groupChats/",
         method: "get",
         action: group_chat.getGroupChat
+    },
+    {
+        path: "/group/getAllMember/",
+        method: "get",
+        action: group_chat.getMembers
     },
 ]
