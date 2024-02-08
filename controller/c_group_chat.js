@@ -80,7 +80,7 @@ const getMessages = async(req,res) => {
                 include: [
                     { // para sa user to get the admin and student sa message_to
                         model: User,
-                        attributes: ['email', 'username'],
+                        attributes: ['id','email'],
                         as: "message_to_user_to",
                         include:[
                             {
