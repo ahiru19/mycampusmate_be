@@ -216,6 +216,81 @@ const changePass = async(req, res) => {
   })
 }
 
+const changeProfile = async (req, res) => {
+  if(req.files){ // check if there is a file and get the file id
+
+    let ext_name = ['.jpg','.jpeg','.png']
+
+    let file_info = await getFileInfo(req.files.file, 'profile')
+
+    if(ext_name.indexOf(path.extname(file_info.file_name).toLowerCase()) === -1 ){//check for the file extension
+        res.status(400).send('Only accept jpeg, jpg and/or png');
+        return 0;
+    }
+
+     let profile_id = 0 
+     let user =  await User.findOne({
+      where:{id:req.user_info.id},
+      include:[
+        {
+          model: Student,
+          attributes: ['id'],
+          include: [
+            {
+              model: userProfile,
+              attributes: ['id'],
+              as: "student_profile"
+            }
+          ],
+          as: "student"
+      },
+      {
+        model: Admin,
+        attributes: ['id'],
+        include: [
+          {
+            model: userProfile,
+            attributes: ['id'],
+            as: "admin_profile"
+          }
+        ],
+        as: "admin"
+    },
+      ]
+    })
+
+    if(user.student){
+      profile_id = user.student.student_profile
+      console.log(profile_id)
+    }
+    else if(user.admin){
+      profile_id = user.admin.admin_profile.id
+      console.log(profile_id)
+    }
+
+   
+
+    let profile_info = await getFileInfo(req.files.file, 'profile'); // get profile details
+
+    await req.files.file.mv(`./public/profile/${profile_info.file_rand_name}`); // save the new profile
+
+    let profile = await userProfile.findOne({ where: {id: profile_id}}); // get the userprofile to update it
+    
+    profile.file_name = profile_info.file_name;
+    profile.file_rand_name = profile_info.file_rand_name;
+
+    profile.save();
+
+    res.send('Profile changed successfuly');
+  }
+  else {
+    res.status(400).send('No file found');
+  }
+  
+ 
+
+}
+
 
   
-module.exports = { login, register, logout, getOneUser, changePass };
+module.exports = { login, register, logout, getOneUser, changePass, changeProfile };

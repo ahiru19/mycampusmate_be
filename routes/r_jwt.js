@@ -31,11 +31,11 @@ module.exports.routeJWT = [
         action: jwt.changePass
     },
 
-    // {
-    //     path: "/client/update/",
-    //     method: "put",
-    //     action: client.updateClient
-    // },
+    {
+        path: "/jwt/changeProfile/",
+        method: "put",
+        action: jwt.changeProfile
+    },
 
     // {
     //     path: "/client/delete/",
