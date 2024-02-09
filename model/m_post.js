@@ -51,6 +51,17 @@ const studentPost = sequelize.define("posts", {
         // }
     },
 
+    is_reported: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue:false,
+    },
+
+    reason_for_report: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    }
+
 }, { freezeTableName: true, timestamps: true });
 
 // relation

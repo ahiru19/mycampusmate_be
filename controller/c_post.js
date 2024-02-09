@@ -1,7 +1,7 @@
 const {studentFiles} = require("../model/m_files");
 const {studentPost} = require("../model/m_post");
 const {Comments} = require("../model/m_comments");
-const {getFileInfo} = require("../helper/helper");
+const {getFileInfo, checkIfUserExist} = require("../helper/helper");
 const {Student} = require("../model/m_student");
 const {Admin} = require("../model/m_admin");
 // const { Sequelize } = require("sequelize");
@@ -62,6 +62,7 @@ const getPost = async (req,res) => {
       
 
     let posts =  await studentPost.findAll({
+        where: {is_reported:0},
         order: [['createdAt', 'DESC']],
         // attributes:{
         //     include:[[Sequelize.fn("COUNT", Sequelize.col("JSON_LENGTH('likes')")), "like_count"]]
@@ -269,5 +270,21 @@ const addLike = async (req, res) => {
     }
 }
 
+const reportPost = async (req, res) => {
+    
+    let post = await checkIfUserExist(studentPost, {id: req.body.post_id});
+    if(!post){
+        res.status(400).send('No post found')
+        return 0;
+    }
+    else {
+        post.is_reported = 1,
+        post.reason_for_report = req.body.reason
+        // console.log(post);
+        post.save();
+        res.send('Post reported successfuly')
+    }
+}
 
-module.exports = {createPost, getPost, deletePost, getOnePost, addLike}
+
+module.exports = {createPost, getPost, deletePost, getOnePost, addLike, reportPost}

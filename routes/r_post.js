@@ -26,4 +26,9 @@ module.exports.routePost = [
         method: "put",
         action: post.addLike
     },
+    {
+        path: "/post/reportPost",
+        method: "put",
+        action: post.reportPost
+    },
 ]
