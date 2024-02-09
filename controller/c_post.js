@@ -284,37 +284,12 @@ const reportPost = async (req, res) => {
     else {
         if(req.user_info.usertype == 1){ //check if admin
             post.is_reported = 2;
-            let user = await User.findOne({ 
-                where: {id: req.user_info.id},
-                include:[
-                    {
-                        model: Admin,
-                        attributes: ['id'],
-                        as: "admin"
-                    },
-                ]
-            })
-
-            post.reporter_id = user.admin.id;
         }
         else {//if not then check student
             post.is_reported = 1;
-       
-
-            let user = await User.findOne({ 
-                where: {id: req.user_info.id},
-                include:[
-                    {
-                    model: Student,
-                    attributes: ['id'],
-                    as: "student"
-                },
-                ]
-            })
-            post.reporter_id = user.student.id;
-            
         }
         
+        post.reporter_id = req.user_inf.id;
         post.reason_for_report = req.body.reason;
         post.save();
         res.send('Post reported successfuly')
@@ -337,10 +312,14 @@ const getReportedPost = async (req, res) => {
     await studentPost.findAll({
         where: {is_reported: 1},
         include: [
+             { model:User,
+              attributes:['id', 'username'],
+              include:  
+              [
                 {
                     model: Student,
                     attributes: ['id','first_name', 'last_name', 'middle_name'],
-                    as: 'studentpost',
+                    as: 'student',
                     include: [
                         {
                             model: userProfile,
@@ -351,7 +330,7 @@ const getReportedPost = async (req, res) => {
                 },
                 {
                     model: Admin,
-                    as: 'adminpost',
+                    as: 'student',
                     attributes:['id','first_name','middle_name','last_name'],
                     include: [
                         {
@@ -361,11 +340,8 @@ const getReportedPost = async (req, res) => {
                         }
                     ]
                 },
-                {   
-                    model: studentFiles,
-                    as: 'post_files',
-                    attributes:['file_path', 'file_name','file_rand_name']
-                },
+              ]
+            }
         ]
     })
     .then( (users)=> {

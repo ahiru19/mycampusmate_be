@@ -1,7 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/dbconfig");
 const {Student} = require("./m_student");
-const {Admin} = require("./m_admin")
+const {Admin} = require("./m_admin");
+const {User} = require ("./m_user");
 
 const studentPost = sequelize.define("posts", {
 
@@ -85,17 +86,17 @@ studentPost.belongsTo(Student, {
     as: "studentpost"
 });
 
-Student.hasMany(studentPost, {
+User.hasMany(studentPost, {
     foreignKey: "reporter_id",
     sourceKey: "id",
-    as: "student_to_report",
+    as: "user_to_report",
     onDelete: "CASCADE"
 });
 
-studentPost.belongsTo(Student, {
+studentPost.belongsTo(User, {
     foreignKey: "reporter_id",
     targetKey: "id",
-    as: "report_to_student"
+    as: "report_to_user"
 });
 
 
