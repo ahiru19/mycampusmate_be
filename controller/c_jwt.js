@@ -196,7 +196,7 @@ const getOneUser = async(req, res) => {
 }
 
 const changePass = async(req, res) => {
-  await User.findOne({where: {username: req.body.username, is_approved:1}}).then(async (user)=> {
+  await User.findOne({where: {id: req.user_info.id, is_approved:1}}).then(async (user)=> {
 
     bcrypt.compare(req.body.old_password, user.password, async (err, result) => {
       if(result){
