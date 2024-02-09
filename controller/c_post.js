@@ -6,6 +6,7 @@ const {Student} = require("../model/m_student");
 const {Admin} = require("../model/m_admin");
 // const { Sequelize } = require("sequelize");
 const {userProfile} = require("../model/m_user_profile")
+const { Op } = require("sequelize");
 const path = require("path");
 var fs = require('fs');
 
@@ -62,7 +63,9 @@ const getPost = async (req,res) => {
       
 
     let posts =  await studentPost.findAll({
-        where: {is_reported:0},
+        where: {
+            [Op.or]: [ {is_reported:1} , {is_reported: 0}]
+        },
         order: [['createdAt', 'DESC']],
         // attributes:{
         //     include:[[Sequelize.fn("COUNT", Sequelize.col("JSON_LENGTH('likes')")), "like_count"]]
@@ -300,7 +303,7 @@ const getReportedPost = async (req, res) => {
     //     return 0;
     // }
     await studentPost.findAll({
-        // where: wh,
+        where: {is_reported: 1},
         include: [
                 {
                     model: Student,
@@ -343,4 +346,18 @@ const getReportedPost = async (req, res) => {
     })
 }
 
-module.exports = {createPost, getPost, deletePost, getOnePost, addLike, reportPost, getReportedPost}
+const approveReport = async (req, res) => {
+    let post = await studentPost.findOne({ where: {id: req.query.id}});
+    if(!post){
+        res.status(400).send('No post found')
+        return 0;
+    }
+    else {
+
+        post.is_reported = 2;
+        post.save();
+        res.send('Report Approved');
+    }
+}
+
+module.exports = {createPost, getPost, deletePost, getOnePost, addLike, reportPost, getReportedPost, approveReport}
