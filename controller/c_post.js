@@ -281,8 +281,9 @@ const reportPost = async (req, res) => {
         return 0;
     }
     else {
-        post.is_reported = 1,
-        post.reason_for_report = req.body.reason
+        post.is_reported = 1;
+        post.reason_for_report = req.body.reason;
+        post.reporter_id = req.user_info.id;
         // console.log(post);
         post.save();
         res.send('Post reported successfuly')
