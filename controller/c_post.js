@@ -288,19 +288,19 @@ const reportPost = async (req, res) => {
 
 const getReportedPost = async (req, res) => {
 
-    let wh = {is_reported: 1}
-    if(req.query.admin_id){
-        wh['admin_id'] = req.query.admin_id;
-    }
-    else if(req.query.student_id){
-        wh['student_id'] = req.query.student_id;
-    }
-    else {
-        res.status(400).send('No ID was given')
-        return 0;
-    }
+    // let wh = {is_reported: 1}
+    // if(req.query.admin_id){
+    //     wh['admin_id'] = req.query.admin_id;
+    // }
+    // else if(req.query.student_id){
+    //     wh['student_id'] = req.query.student_id;
+    // }
+    // else {
+    //     res.status(400).send('No ID was given')
+    //     return 0;
+    // }
     await studentPost.findAll({
-        where: wh,
+        // where: wh,
         include: [
                 {
                     model: Student,
