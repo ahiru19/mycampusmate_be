@@ -276,6 +276,7 @@ const changeProfile = async (req, res) => {
 
      await userProfile.findOne({ where: {id: profile_id}}) // get the userprofile to update it
     .then( async (profile) => {
+      console.log(profile);
       profile.file_name = profile_info.file_name;
       profile.file_rand_name = profile_info.file_rand_name;
       profile.save();
