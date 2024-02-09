@@ -63,7 +63,7 @@ const studentPost = sequelize.define("posts", {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
     },
-    
+
     reason_for_report: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -84,6 +84,20 @@ studentPost.belongsTo(Student, {
     targetKey: "id",
     as: "studentpost"
 });
+
+Student.hasMany(studentPost, {
+    foreignKey: "reporter_id",
+    sourceKey: "id",
+    as: "student_to_report",
+    onDelete: "CASCADE"
+});
+
+studentPost.belongsTo(Student, {
+    foreignKey: "reporter_id",
+    targetKey: "id",
+    as: "report_to_student"
+});
+
 
 // relation
 Admin.hasMany(studentPost, {
