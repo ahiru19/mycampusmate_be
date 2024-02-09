@@ -282,22 +282,40 @@ const reportPost = async (req, res) => {
         return 0;
     }
     else {
-        post.is_reported = 1;
-        post.reason_for_report = req.body.reason;
+        if(req.user_info.usertype == 1){ //check if admin
+            post.is_reported = 2;
+            let user = await User.findOne({ 
+                where: {id: req.user_info.id},
+                include:[
+                    {
+                        model: Admin,
+                        attributes: ['id'],
+                        as: "admin"
+                    },
+                ]
+            })
 
-        let user = await User.findOne({ 
-            where: {id: req.user_info.id},
-            include:[
-                {
-                  model: Student,
-                  attributes: ['id'],
-                  as: "student"
-              },
-            ]
+            post.reporter_id = user.admin.id;
+        }
+        else {//if not then check student
+            post.is_reported = 1;
+       
+
+            let user = await User.findOne({ 
+                where: {id: req.user_info.id},
+                include:[
+                    {
+                    model: Student,
+                    attributes: ['id'],
+                    as: "student"
+                },
+                ]
+            })
+            post.reporter_id = user.student.id;
+            
+        }
         
-        })
-        post.reporter_id = user.student.id;
-        // console.log(post);
+        post.reason_for_report = req.body.reason;
         post.save();
         res.send('Post reported successfuly')
     }
