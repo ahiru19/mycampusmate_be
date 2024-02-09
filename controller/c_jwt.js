@@ -195,6 +195,27 @@ const getOneUser = async(req, res) => {
   }
 }
 
+const changePass = async(req, res) => {
+  await User.findOne({where: {username: req.body.username, is_approved:1}}).then(async (user)=> {
+
+    bcrypt.compare(req.body.old_password, user.password, async (err, result) => {
+      if(result){
+
+        user.password = await bcrypt.hash(req.body.new_password, 12);
+        user.save();
+        return res.status(200).send('Password change successfuly');
+      }
+      else {
+        return res.status(401).send('Username or Password is incorrect');
+      }
+    })
+  }
+  ).catch(async (err) => {
+    console.log(err)
+    res.status(400).send('User not found or not yet approved');
+  })
+}
+
 
   
-module.exports = { login, register, logout, getOneUser };
+module.exports = { login, register, logout, getOneUser, changePass };

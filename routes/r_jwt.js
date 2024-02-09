@@ -25,11 +25,11 @@ module.exports.routeJWT = [
         action: jwt.getOneUser
     },
 
-    // {
-    //     path: "/client/create/",
-    //     method: "post",
-    //     action: client.createClient
-    // },
+    {
+        path: "/jwt/changePassword/",
+        method: "put",
+        action: jwt.changePass
+    },
 
     // {
     //     path: "/client/update/",
