@@ -52,11 +52,18 @@ const studentPost = sequelize.define("posts", {
     },
 
     is_reported: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.INTEGER,
+        //0 - not reported
+        //1 - reported but pending for admin validation
+        //2 - reported and approved deleted by admin
         allowNull: true,
         defaultValue:false,
     },
-
+    reporter_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: true,
+    },
+    
     reason_for_report: {
         type: DataTypes.STRING,
         allowNull: true,
