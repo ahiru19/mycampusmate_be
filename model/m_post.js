@@ -57,7 +57,7 @@ const studentPost = sequelize.define("posts", {
         //1 - reported but pending for admin validation
         //2 - reported and approved deleted by admin
         allowNull: true,
-        defaultValue:false,
+        defaultValue:0,
     },
     reporter_id: {
         type: DataTypes.INTEGER.UNSIGNED,
