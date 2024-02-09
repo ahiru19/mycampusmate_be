@@ -4,6 +4,7 @@ const {Comments} = require("../model/m_comments");
 const {getFileInfo, checkIfUserExist} = require("../helper/helper");
 const {Student} = require("../model/m_student");
 const {Admin} = require("../model/m_admin");
+const {User} = require("../model/m_user");
 // const { Sequelize } = require("sequelize");
 const {userProfile} = require("../model/m_user_profile")
 const { Op } = require("sequelize");
@@ -283,7 +284,19 @@ const reportPost = async (req, res) => {
     else {
         post.is_reported = 1;
         post.reason_for_report = req.body.reason;
-        post.reporter_id = req.user_info.id;
+
+        let user = await User.findOne({ 
+            where: {id: req.user_info.id},
+            include:[
+                {
+                  model: Student,
+                  attributes: ['id'],
+                  as: "student"
+              },
+            ]
+        
+        })
+        post.reporter_id = user.student.id;
         // console.log(post);
         post.save();
         res.send('Post reported successfuly')
