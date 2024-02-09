@@ -70,7 +70,7 @@ const getPost = async (req,res) => {
         include:[
             {
                 model: Student,
-                attributes: ['first_name', 'last_name', 'middle_name','age','address','student_num'],
+                attributes: ['id','first_name', 'last_name', 'middle_name','age','address','student_num'],
                 as: 'studentpost',
                 include: [
                     {
@@ -286,5 +286,61 @@ const reportPost = async (req, res) => {
     }
 }
 
+const getReportedPost = async (req, res) => {
 
-module.exports = {createPost, getPost, deletePost, getOnePost, addLike, reportPost}
+    let wh = {is_reported: 1}
+    if(req.query.admin_id){
+        wh['admin_id'] = req.query.admin_id;
+    }
+    else if(req.query.student_id){
+        wh['student_id'] = req.query.student_id;
+    }
+    else {
+        res.status(400).send('No ID was given')
+        return 0;
+    }
+    await studentPost.findAll({
+        where: wh,
+        include: [
+                {
+                    model: Student,
+                    attributes: ['id','first_name', 'last_name', 'middle_name'],
+                    as: 'studentpost',
+                    include: [
+                        {
+                            model: userProfile,
+                            attributes: ['file_path', 'file_name', 'file_rand_name'],
+                            as: "student_profile"
+                        }
+                    ]
+                },
+                {
+                    model: Admin,
+                    as: 'adminpost',
+                    attributes:['id','first_name','middle_name','last_name'],
+                    include: [
+                        {
+                            model: userProfile,
+                            attributes: ['file_path', 'file_name', 'file_rand_name'],
+                            as: "admin_profile"
+                        }
+                    ]
+                },
+                {   
+                    model: studentFiles,
+                    as: 'post_files',
+                    attributes:['file_path', 'file_name','file_rand_name']
+                },
+        ]
+    })
+    .then( (users)=> {
+        res.send(users)
+    })
+    .catch( (err)=> {
+        console.log(err);
+        res.status(500).send('Something went wrong');
+        return 0;
+    })
+}
+
+module.exports = {createPost, getPost, deletePost, getOnePost, addLike, reportPost, getReportedPost}
