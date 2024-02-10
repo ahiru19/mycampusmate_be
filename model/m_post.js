@@ -38,7 +38,7 @@ const studentPost = sequelize.define("posts", {
     likes: {
         type: DataTypes.TEXT('medium'),
         allowNull: true,
-        defaultValue:"[]",
+        // defaultValue:"[]",
         // get() {
 
         //     if(this.getDataValue('likes') != "[]" || this.getDataValue('likes') != ""){
