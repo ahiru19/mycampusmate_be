@@ -278,8 +278,8 @@ const reportPost = async (req, res) => {
     
     let post = await checkIfUserExist(studentPost, {id: req.body.post_id});
     if(!post){
-        res.status(400).send('No post found')
-        return 0;
+            res.status(404).send('Post not found');
+            return 0;
     }
     else {
         if(req.user_info.usertype == 1){ //check if admin
@@ -355,7 +355,7 @@ const getReportedPost = async (req, res) => {
 }
 
 const approveReport = async (req, res) => {
-    let post = await studentPost.findOne({ where: {id: req.query.id}});
+    let post = await studentPost.findOne({ where: {id: req.query.id, is_reported}});
     if(!post){
         res.status(400).send('No post found')
         return 0;
