@@ -314,6 +314,7 @@ const getReportedPost = async (req, res) => {
         include: [
              { model:User,
               attributes:['id', 'username'],
+              as: "report_to_user",
               include:  
               [
                 {
