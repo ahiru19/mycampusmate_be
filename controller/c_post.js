@@ -331,7 +331,7 @@ const getReportedPost = async (req, res) => {
                 },
                 {
                     model: Admin,
-                    as: 'student',
+                    as: 'admin',
                     attributes:['id','first_name','middle_name','last_name'],
                     include: [
                         {
