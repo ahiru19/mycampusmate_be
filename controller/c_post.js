@@ -310,7 +310,11 @@ const getReportedPost = async (req, res) => {
     //     return 0;
     // }
     await studentPost.findAll({
-        where: {is_reported: 1},
+        where: {
+            [Op.or]: [
+                {is_reported:1},
+                {is_reported:2}
+        ]},
         include: [
              { model:User,
               attributes:['id', 'username'],
