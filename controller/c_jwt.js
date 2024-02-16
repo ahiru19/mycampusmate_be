@@ -47,16 +47,23 @@ const register = async (req, res) => {
             .then( async (user) => { 
               body.user_id = user.id;
 
+              let new_user = await User.findOne({where:{id: user.id}});
+              
+
               if(body.usertype == 1){//check if admin or student
-                await Admin.create({ ...body})
+                let admin = await Admin.create({ ...body})
+                user.admin_id = admin.id;
               }
 
               else{
-                await Student.create({ ...body})
+                let student = await Student.create({ ...body})
+                user.stutent_id = student.id;
               }
-
+              await new_user.save();
+              
               await userProfile.create({ ...file_info}) //save the user profile
-
+              
+              
             })
             res.send('Registered Successfuly')
 
