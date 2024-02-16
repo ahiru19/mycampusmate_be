@@ -360,13 +360,12 @@ const getReportedPost = async (req, res) => {
 }
 
 const approveReport = async (req, res) => {
-    let post = await studentPost.findOne({ where: {id: req.query.id, is_reported}});
+    let post = await studentPost.findOne({ where: {id: req.query.id, is_reported: 1}});
     if(!post){
         res.status(400).send('No post found')
         return 0;
     }
     else {
-
         post.is_reported = 2;
         post.save();
         res.send('Report Approved');
