@@ -60,7 +60,7 @@ const createPost = async (req,res) => {
     
 } 
 
-const getPost = async (req,res) => {
+const getPost = async (req,res) => { //get all posts
       
 
     let posts =  await studentPost.findAll({
@@ -149,7 +149,87 @@ const getPost = async (req,res) => {
     res.send(posts)
 }
 
-const getOnePost = async (req,res) => {
+const getUserPost = async (req,res) => { // get all post of the user based on id
+
+    let wh = {}
+    if(req.query.student_id){
+        wh = { student_id : req.query.student_id}
+    }
+    else if(req.query.admin_id){
+        wh = { admin_id : req.query.admin_id}
+    }
+
+    let posts =  await studentPost.findAll({
+        where: wh,
+        order: [['createdAt', 'DESC']],
+        include:[
+            {
+                model: Student,
+                attributes: ['id','first_name', 'last_name', 'middle_name','age','address','student_num'],
+                as: 'studentpost',
+                include: [
+                    {
+                        model: userProfile,
+                        attributes: ['file_path', 'file_name', 'file_rand_name'],
+                        as: "student_profile"
+                    }
+                ]
+            },
+            {
+                model: Admin,
+                as: 'adminpost',
+                include: [
+                    {
+                        model: userProfile,
+                        attributes: ['file_path', 'file_name', 'file_rand_name'],
+                        as: "admin_profile"
+                    }
+                ]
+            },
+            {   
+                model: studentFiles,
+                as: 'post_files',
+                attributes:['file_path', 'file_name','file_rand_name']
+            },
+            {
+                model: Comments,
+                as: 'comments_to_post',
+                attributes:['id','comments'],
+                include: [
+                    {
+                        model: Student,
+                        attributes: ['id','first_name', 'last_name', 'middle_name'],
+                        as: 'studentcomments',
+                        include: [
+                            {
+                                model: userProfile,
+                                attributes: ['file_path', 'file_name', 'file_rand_name'],
+                                as: "student_profile"
+                            }
+                        ]
+                    },
+                    {
+                        model: Admin,
+                        attributes: ['id','first_name', 'last_name', 'middle_name'],
+                        as: 'admincomments',
+                        include: [
+                            {
+                                model: userProfile,
+                                attributes: ['file_path', 'file_name', 'file_rand_name'],
+                                as: "admin_profile"
+                            }
+                        ]
+                    },
+                ]
+            }
+        ]
+    });
+
+    res.send(posts)
+}
+
+
+const getOnePost = async (req,res) => { //get a specific post based on id
         let users = await Student.findOne({
             where: {id: req.query.id},
             include: [
@@ -372,4 +452,4 @@ const approveReport = async (req, res) => {
     }
 }
 
-module.exports = {createPost, getPost, deletePost, getOnePost, addLike, reportPost, getReportedPost, approveReport}
+module.exports = {createPost, getPost, deletePost, getOnePost, addLike, reportPost, getReportedPost, approveReport, getUserPost}

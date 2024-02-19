@@ -41,4 +41,9 @@ module.exports.routePost = [
         method: "put",
         action: post.approveReport
     },
+    {
+        path: "/post/getUserPost",
+        method: "put",
+        action: post.getUserPost
+    },
 ]
